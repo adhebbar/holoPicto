@@ -75,21 +75,7 @@ void draw(){
   
   if(currDrawModeOn) points.add(temp); //add current location to stroke
   
-  //draw everything
   drawHolo();
-  //drawing history of strokes
-  for (ArrayList<PVector> stroke : strokes)
-  {
-    for (PVector p: stroke)
-    {
-      drawSpheres(p);
-    }
-  }
-  //drawing current stroke
-  for (PVector p: points)
-  {
-      drawSpheres(p);
-  }
   //add cursor
   strokeWeight(1); 
   fill(127,0,0);
@@ -106,7 +92,6 @@ void drawHolo() {
   rotateZ(PI/4);
   // so that we redraw the picture each time
   background(0);
-  
   // this cycles through all of the split screens and draws each
   for(int i = 0; i< 4; i++){
    pg[i].beginDraw();
@@ -123,9 +108,8 @@ void drawHolo() {
    pg[i].translate(width/4, 0, -200);
    executesideRotation(pg[i], i);
    pg[i].rotateX(mouseX/float(width) * 2 * PI);
-}
-// do this affect drawing everything in here
-void finishDrawHolo() {
+   // all drawing here
+   drawAllTraces();
    pg[i].noFill();
    pg[i].popMatrix();
    pg[i].endDraw();
@@ -136,13 +120,34 @@ void finishDrawHolo() {
   // helps for centering and to tell us where the x coordinate is
   text(mouseX, 0,0);
 }
-void drawSpheres(PVector p) {
+void drawAllTraces(PGraphics pg) {
+  for (ArrayList<PVector> stroke : strokes)
+  {
+    pg.beginShape();
+    for (PVector p: stroke)
+    {
+      pg.stroke(p.z);
+      pg.vertex(p.x,p.y,p.z);
+    }
+    pg.endShape();
+  }
+  //drawing current stroke
+  pg.beginShape();
+  for (PVector p: points)
+  {
+      pg.stroke(p.z);
+      pg.vertex(p.x,p.y,p.z);
+  }
+  pg.endShape();
+}
+/*
+void drawSpheres(PGraphics pg, PVector p) {
   pg[i].translate(p.x,p.y,p.z);
   pg[i].strokeWeight(10); 
   pg[i].stroke(p.z);
   pg[i].sphere(20);
   pg[i].translate(-p.x,-p.y,-p.z);
-}
+}*/
 // rotates the coordinate system so that the system will be what is necessary for the 
 // creation of the matrix
 void executesideRotation(PGraphics pg, int side) {
