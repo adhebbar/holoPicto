@@ -1,3 +1,5 @@
+import de.voidplus.leapmotion.*;
+
 import com.leapmotion.leap.*;
 Controller controller = new Controller();
 
@@ -109,7 +111,7 @@ void drawHolo() {
    executesideRotation(pg[i], i);
    pg[i].rotateX(mouseX/float(width) * 2 * PI);
    // all drawing here
-   drawAllTraces();
+   drawAllTraces(pg[i]);
    pg[i].noFill();
    pg[i].popMatrix();
    pg[i].endDraw();
