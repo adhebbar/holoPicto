@@ -10,6 +10,16 @@ PVector temp;
 boolean currDrawModeOn = false;
 boolean prevDrawModeOn = false;
 boolean eraseCommand = false;
+Frame frame = controller.frame(); //This current moment
+
+//To make it a smoother line
+int jump = 20;
+int x = 0;
+int y = 0;
+int z = 0;
+int prevX = 0;
+int prevY = 0;
+int prevZ = 0;
 
 PGraphics pg[];
 int winSize = 690;
@@ -25,19 +35,18 @@ void setup(){
 }
 
 void draw(){
+    ///////SET UP FRAME AND HAND/////////
   background(111, 191, 255);//clear screen
-  Frame frame = controller.frame(); 
+  frame = controller.frame(); 
   Hand hand = frame.hands().frontmost(); //frontmost hand
-  float pinch = hand.pinchStrength();
+  
+  
+  
+  
+  
+  ///////////PINCH DETECTION////////////////
+  float pinch = hand.pinchStrength(); //ranges from 0 to 1
 
-  //calculate x,y,z coords
-  Vector pos = hand.palmPosition();
-  int x = int(pos.getX()+100);
-  int y = 400-int(pos.getY());
-  int z = int(pos.getZ());
-  temp = new PVector(x,y,z);
-
-  //prints to console for debugging and check if pinch is detected:
   String pinchDetected = "pinch not detected";
   if(pinch>pinchThresh) 
   {
@@ -45,27 +54,96 @@ void draw(){
     currDrawModeOn = true;
   }
   else currDrawModeOn = false;
-  println(pinchDetected);
-  println("x : "+ x + 
-  " y : "+ y +" z : "+ z);
   
+  //debugging
+  println(pinchDetected);
+  
+  
+  
+  
+  
+  
+  ////////////CIRCLE GESTURES && ERASE///////////////
+  //for(Gesture gesture : frame.gestures())
+  //{
+  //    if(gesture.type() == Gesture.Type.TYPE_CIRCLE) 
+  //    {
+  //       println("CIRCLE");
+  //       eraseCommand = true;
+  //    }
+  //}
+  
+  if(eraseCommand && (strokes.size()>0)) //delete current stroke
+  {
+     currDrawModeOn = false;
+     //points = strokes.get(strokes.size()-1); //make current stroke last stroke
+     strokes.remove(strokes.size()-1); //remove last stroke from history
+     points = new ArrayList<PVector>();
+  }
+  
+  
+  
+  
+  ///////////CHECKING SWIPE/////////
+  int swipe = checkSwipe(frame); //0 is no swipe, -1 is left swipe, 1 is right swipe
+  //println("SWIPE PRINT" + swipe);
+  
+  
+  
+  
+  /////////DRAWING///////////
+  //issue is that closed fist is pinching but like lol
+  
+  //Checking if it is actually swiping or one finger extended first
+  //Check everything else first before checking pinching because a lot of things are pinching
+  if(numExtended(frame) >= 1) currDrawModeOn = false;
+  if(swipe != 0) currDrawModeOn = false;
+  
+  
+  ////Get the position
+  Vector pos = hand.palmPosition();
+  x = int(pos.getX()+100);
+  y = 400-int(pos.getY());
+  z = int(pos.getZ());
+  temp = new PVector(x,y,z);
+  //println("x : "+ x + 
+  //" y : "+ y +" z : "+ z);
+  
+  
+  //If it's a new Stroke
   //end of stroke, must add current stroke to list of all strokes
   // and create new stroke
+  ///////TAKE NOTE OF THIS LUCY
   if(prevDrawModeOn && !currDrawModeOn)
   {
      strokes.add(points); //add to all strokes
      points = new ArrayList<PVector>(); //new stroke
   }
   
-  if(currDrawModeOn) points.add(temp); //add current location to stroke
+  //points.add(temp); //add current point to current stroke
+  if(currDrawModeOn)
+  {
+    int totalDiff = 0;
+    if(points.size()>1){
+      totalDiff = x-prevX;
+      totalDiff += y-prevY;
+      totalDiff += z-prevZ;
+    }
+    if(totalDiff < jump)
+    {
+      points.add(temp); //add current point to current stroke
+    }
+  }
+  
   
   drawHolo();
-  //add cursor
-  strokeWeight(1); 
-  fill(127,0,0);
-  if (currDrawModeOn) fill(0,127,0);
-  ellipse(x,y,20,20);
+  
+  //for checking against the previous frame
   prevDrawModeOn = currDrawModeOn;
+  prevX = x;
+  prevY = y;
+  prevZ = z;
+  
 }
 // this is the first part of a two method series required for hologram, in between
 // the actual objects will be drawn using drawSphere. 
@@ -105,16 +183,28 @@ void drawHolo() {
   text(mouseX, 0,0);
 }
 void drawAllTraces(PGraphics pg) {
+  //Line attributes
+  pg.stroke(126); //color of the border
+  pg.strokeWeight(10); //width of the stroke
+  pg.noFill(); //??
+  
+  
+  
+  //drawing history of strokes
   for (ArrayList<PVector> stroke : strokes)
   {
     pg.beginShape();
     for (PVector p: stroke)
     {
-      pg.stroke(p.z);
+      pg.stroke(p.z); //color is determined by z axis
       pg.vertex(p.x,p.y,p.z);
     }
     pg.endShape();
   }
+  
+  
+  
+  
   //drawing current stroke
   pg.beginShape();
   for (PVector p: points)
@@ -123,6 +213,23 @@ void drawAllTraces(PGraphics pg) {
       pg.vertex(p.x,p.y,p.z);
   }
   pg.endShape();
+  
+  
+  
+  
+  //add cursor only if not all the fingers are extended or you're pinching
+  if(numExtended(frame) < 5 || currDrawModeOn)
+  {
+    pg.strokeWeight(1); 
+    pg.fill(127,0,0); //red
+    if (currDrawModeOn) fill(0,127,0); //green
+    pg.noStroke();
+    pg.lights();
+    pg.pushMatrix();
+    pg.translate(x, y, z);
+    pg.sphere(10);
+    pg.popMatrix();
+  }
 }
 
 // rotates the coordinate system so that the system will be what is necessary for the 
@@ -150,4 +257,43 @@ void drawShape(PGraphics shp, int z){
    shp.vertex(100,10,10*z);
    shp.vertex(0,0,0*z);
    shp.endShape();
+}
+
+int checkSwipe(Frame frame){
+  //Checking how many are extended and the angle
+  int countAngle = 0;
+  
+  //Goes through each finger and checks how many of the extended fingers are facing the same way
+  for (Pointable p: frame.pointables()){
+    Finger finger = new Finger(p);
+    if(finger.isExtended())
+    {
+      Vector pointingToward = p.direction();
+      countAngle = countAngle + int(pointingToward.yaw());
+    }
+  }
+  
+  
+  if(countAngle == 2){
+    println("RIGHT");
+    return 1;
+  }
+  
+  if(countAngle == -2)
+  {
+    println("LEFT");
+    return -1;
+  }
+  return 0;
+}
+
+int numExtended(Frame frame)
+{
+  //Checks the number of fingers extended
+  int count = 0;
+  for (Pointable p: frame.pointables()){
+    Finger finger = new Finger(p);
+    if(finger.isExtended()) count++;
+  }
+  return count;
 }
