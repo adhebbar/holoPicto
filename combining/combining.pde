@@ -6,6 +6,7 @@ Controller controller = new Controller();
 float pinchThresh = 0.4;
 ArrayList<PVector> points = new ArrayList<PVector>(); //current stroke
 ArrayList<ArrayList> strokes = new ArrayList<ArrayList>(); //array of all strokes
+ArrayList<Float> angles = new ArrayList<Float>();
 PVector temp;
 boolean currDrawModeOn = false;
 boolean prevDrawModeOn = false;
@@ -111,6 +112,7 @@ void draw(){
   if(prevDrawModeOn && !currDrawModeOn)
   {
      strokes.add(points); //add to all strokes
+     angles.add(-mouseX/float(width) * 2 * PI);
      points = new ArrayList<PVector>(); //new stroke
   }
   
@@ -197,10 +199,15 @@ void drawAllTraces(PGraphics pg) {
   for (ArrayList<PVector> stroke : strokes)
   {
     pg.beginShape();
+    for (int i = 0; i<stroke.size();i++)
     for (PVector p: stroke)
     {
+      PVector p = stroke.get(i);
+      Float angle = angles.get(i);
+      pg.rotateX(angle);
       pg.stroke(p.z); //color is determined by z axis
       pg.vertex(p.x,p.y,p.z);
+      pg.rotateX(-angle);
     }
     pg.endShape();
   }
