@@ -73,22 +73,7 @@ void draw(){
   
   //debugging
   println(pinchDetected);
-  
-
-//////////CIRCLE GESTURES && ERASE///////////////
-  for(Gesture gesture : frame.gestures())
-  {
-      if(gesture.type() == Gesture.Type.TYPE_CIRCLE) 
-      {
-        circleCount++;
-         println("CIRCLE");
-         if(circleCount%30==0)
-            {eraseCommand = true;
-            circleCount =0;
-            }
-      }
-  }
-  
+    
   if(eraseCommand && (strokes.size()>0)) //delete current stroke
   {
      currDrawModeOn = false;
@@ -385,49 +370,6 @@ void drawShape(PGraphics shp, int z){
    shp.vertex(0,0,0*z);
    shp.endShape();
 }
-/*
-returns -1 left; 0 nothing; 1 right
-*/
-int checkSwipe(Frame frame){
-  //Checking how many are extended and the angle
-  int countAngle = 0;
-  
-  //Goes through each finger and checks how many of the extended fingers are facing the same way
-  for (Pointable p: frame.pointables()){
-    Finger finger = new Finger(p);
-    if(finger.isExtended())
-    {
-      Vector pointingToward = p.direction();
-      countAngle = countAngle + int(pointingToward.yaw());
-    }
-  }
-  
-  
-  if(countAngle == 2){
-    println("RIGHT");
-    return 1;
-  }
-  
-  if(countAngle == -2)
-  {
-    println("LEFT");
-    return -1;
-  }
-  return 0;
-}
-
-int numExtended(Frame frame)
-{
-  //Checks the number of fingers extended
-  int count = 0;
-  for (Pointable p: frame.pointables()){
-    Finger finger = new Finger(p);
-    if(finger.isExtended()) count++;
-  }
-  return count;
-}
-
-
 
 
 void setColors( int col)
