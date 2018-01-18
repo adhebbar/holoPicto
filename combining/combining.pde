@@ -39,7 +39,7 @@ void setup(){
 
 void draw(){
     ///////SET UP FRAME AND HAND/////////
-  background(111, 191, 255);//clear screen
+  background(0);//clear screen
   frame = controller.frame(); 
   Hand hand = frame.hands().frontmost(); //frontmost hand
   
@@ -97,9 +97,9 @@ void draw(){
   
   ////Get the position
   Vector pos = hand.palmPosition();
-  y = -int(pos.getX())+100;
-  x = -int(pos.getY())-100;
-  z = int(pos.getZ());
+  y = -2*int(pos.getX());
+  x = -2*int(pos.getY())+150;
+  z = 2*int(pos.getZ());
   temp = new PVector(x,y,z);
   println("x : "+ x + 
   " y : "+ y +" z : "+ z);
@@ -156,7 +156,7 @@ void drawHolo() {
   for(int i = 0; i< 4; i++){
    pg[i].beginDraw();
    // background of the split screens
-   pg[i].background(111,191,255);
+   pg[i].background(0);
    pg[i].stroke(255);
    // maintains the rotations already produced for when these are poped
    pg[i].pushMatrix();
@@ -196,20 +196,19 @@ void drawAllTraces(PGraphics pg) {
   
   
   //drawing history of strokes
-  for (ArrayList<PVector> stroke : strokes)
+  for (int i = 0; i< strokes.size(); i++)
   {
+    ArrayList<PVector> stroke = strokes.get(i);
+    Float angle = angles.get(i);
+    pg.rotateX(angle);
     pg.beginShape();
-    for (int i = 0; i<stroke.size();i++)
-    for (PVector p: stroke)
+    for (PVector p : stroke)
     {
-      PVector p = stroke.get(i);
-      Float angle = angles.get(i);
-      pg.rotateX(angle);
       pg.stroke(p.z); //color is determined by z axis
       pg.vertex(p.x,p.y,p.z);
-      pg.rotateX(-angle);
     }
     pg.endShape();
+    pg.rotateX(-angle);
   }
   
   
