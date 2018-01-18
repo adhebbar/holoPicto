@@ -1,4 +1,4 @@
-import de.voidplus.leapmotion.*;
+//import de.voidplus.leapmotion.*;
 
 import com.leapmotion.leap.*;
 Controller controller = new Controller();
@@ -13,7 +13,7 @@ boolean eraseCommand = false;
 
 PGraphics pg[];
 int winSize = 690;
-int scrnSize = winSize/3;
+int scrnSize = 2*winSize/4;
 int screenCoords[] = {0,0};
 
 void setup(){
@@ -29,32 +29,14 @@ void draw(){
   Frame frame = controller.frame(); 
   Hand hand = frame.hands().frontmost(); //frontmost hand
   float pinch = hand.pinchStrength();
-  
-    //gesture stuff
-      for(Gesture gesture : frame.gestures())
-    {
-        if(gesture.type()== Gesture.Type.TYPE_CIRCLE) 
-        {
-           println("CIRCLE");
-           eraseCommand = true;
-        }
-    }
-  
-  //if(eraseCommand && (strokes.size()>0)) //delete current stroke
-  //{
-  //   currDrawModeOn = false;
-  //   points = strokes.get(strokes.size()-1); //make current stroke last stroke
-  //   strokes.remove(strokes.size()-1); //remove last stroke from history
-  //}
-  
+
   //calculate x,y,z coords
   Vector pos = hand.palmPosition();
   int x = int(pos.getX()+100);
   int y = 400-int(pos.getY());
   int z = int(pos.getZ());
   temp = new PVector(x,y,z);
-  
- 
+
   //prints to console for debugging and check if pinch is detected:
   String pinchDetected = "pinch not detected";
   if(pinch>pinchThresh) 
@@ -98,7 +80,7 @@ void drawHolo() {
   for(int i = 0; i< 4; i++){
    pg[i].beginDraw();
    // background of the split screens
-   pg[i].background(0);
+   pg[i].background(111,191,255);
    pg[i].stroke(255);
    // maintains the rotations already produced for when these are poped
    pg[i].pushMatrix();
@@ -142,14 +124,7 @@ void drawAllTraces(PGraphics pg) {
   }
   pg.endShape();
 }
-/*
-void drawSpheres(PGraphics pg, PVector p) {
-  pg[i].translate(p.x,p.y,p.z);
-  pg[i].strokeWeight(10); 
-  pg[i].stroke(p.z);
-  pg[i].sphere(20);
-  pg[i].translate(-p.x,-p.y,-p.z);
-}*/
+
 // rotates the coordinate system so that the system will be what is necessary for the 
 // creation of the matrix
 void executesideRotation(PGraphics pg, int side) {
