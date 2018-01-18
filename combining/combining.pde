@@ -6,6 +6,7 @@ Controller controller = new Controller();
 float pinchThresh = 0.4;
 ArrayList<PVector> points = new ArrayList<PVector>(); //current stroke
 ArrayList<ArrayList> strokes = new ArrayList<ArrayList>(); //array of all strokes
+ArrayList<Float> angles = new ArrayList<Float>();
 PVector temp;
 boolean currDrawModeOn = false;
 boolean prevDrawModeOn = false;
@@ -23,8 +24,10 @@ int prevZ = 0;
 
 PGraphics pg[];
 int winSize = 690;
-int scrnSize = 2*winSize/4;
+int scrnSize = 3*winSize/4;
 int screenCoords[] = {0,0};
+
+float angleRotated = 0;
 
 void setup(){
   pg = new PGraphics[4];
@@ -36,13 +39,9 @@ void setup(){
 
 void draw(){
     ///////SET UP FRAME AND HAND/////////
-  background(111, 191, 255);//clear screen
+  background(0);//clear screen
   frame = controller.frame(); 
   Hand hand = frame.hands().frontmost(); //frontmost hand
-  
-  
-  
-  
   
   ///////////PINCH DETECTION////////////////
   float pinch = hand.pinchStrength(); //ranges from 0 to 1
@@ -58,11 +57,7 @@ void draw(){
   //debugging
   println(pinchDetected);
   
-  
-  
-  
-  
-  
+
   ////////////CIRCLE GESTURES && ERASE///////////////
   //for(Gesture gesture : frame.gestures())
   //{
@@ -102,12 +97,12 @@ void draw(){
   
   ////Get the position
   Vector pos = hand.palmPosition();
-  x = int(pos.getX()+100);
-  y = 400-int(pos.getY());
-  z = int(pos.getZ());
+  y = -2*int(pos.getX());
+  x = -2*int(pos.getY())+150;
+  z = 2*int(pos.getZ());
   temp = new PVector(x,y,z);
-  //println("x : "+ x + 
-  //" y : "+ y +" z : "+ z);
+  println("x : "+ x + 
+  " y : "+ y +" z : "+ z);
   
   
   //If it's a new Stroke
@@ -117,6 +112,7 @@ void draw(){
   if(prevDrawModeOn && !currDrawModeOn)
   {
      strokes.add(points); //add to all strokes
+     angles.add(-mouseX/float(width) * 2 * PI);
      points = new ArrayList<PVector>(); //new stroke
   }
   
@@ -136,6 +132,7 @@ void draw(){
   }
   
   
+  
   drawHolo();
   
   //for checking against the previous frame
@@ -145,8 +142,9 @@ void draw(){
   prevZ = z;
   
 }
-// this is the first part of a two method series required for hologram, in between
-// the actual objects will be drawn using drawSphere. 
+/* this is the first part of a two method series required for hologram, in between
+ the actual objects will be drawn using drawSphere.
+ */
 void drawHolo() {
   translate(width/2,height/2,10);
   // so that each of the split screens will be rotated at 0 90 180 and 270 degrees 
@@ -158,18 +156,25 @@ void drawHolo() {
   for(int i = 0; i< 4; i++){
    pg[i].beginDraw();
    // background of the split screens
-   pg[i].background(111,191,255);
+   pg[i].background(0);
    pg[i].stroke(255);
    // maintains the rotations already produced for when these are poped
    pg[i].pushMatrix();
    // so that the start of each image is started away from the left edge of the 
-   //split screen
+   // split screen
    pg[i].rotateZ(PI/4);
    // this is so that the objects are not in the middle and so they are far enough away
    // to be used this way
    pg[i].translate(width/4, 0, -200);
    executesideRotation(pg[i], i);
    pg[i].rotateX(mouseX/float(width) * 2 * PI);
+   //translate leapmotion coordinates and display coords
+   pg[i].stroke(0,0,255);
+   pg[i].line(100,0,0,0,0,0);
+   pg[i].stroke(0,255,0);
+   pg[i].line(0,0,100,0,0,0);
+   
+   //pg[i].rotateZ(PI/2);
    // all drawing here
    drawAllTraces(pg[i]);
    pg[i].noFill();
@@ -191,28 +196,36 @@ void drawAllTraces(PGraphics pg) {
   
   
   //drawing history of strokes
-  for (ArrayList<PVector> stroke : strokes)
+  for (int i = 0; i< strokes.size(); i++)
   {
+    ArrayList<PVector> stroke = strokes.get(i);
+    Float angle = angles.get(i);
+    pg.rotateX(angle);
     pg.beginShape();
-    for (PVector p: stroke)
+    for (PVector p : stroke)
     {
       pg.stroke(p.z); //color is determined by z axis
       pg.vertex(p.x,p.y,p.z);
     }
     pg.endShape();
+    pg.rotateX(-angle);
   }
   
   
   
   
   //drawing current stroke
+  pg.rotateX(-mouseX/float(width) * 2 * PI);
   pg.beginShape();
+  
   for (PVector p: points)
   {
       pg.stroke(p.z);
       pg.vertex(p.x,p.y,p.z);
   }
+  
   pg.endShape();
+  pg.rotateX(+mouseX/float(width) * 2 * PI);
   
   
   
@@ -220,15 +233,17 @@ void drawAllTraces(PGraphics pg) {
   //add cursor only if not all the fingers are extended or you're pinching
   if(numExtended(frame) < 5 || currDrawModeOn)
   {
+    pg.rotateX(-mouseX/float(width) * 2 * PI);
     pg.strokeWeight(1); 
     pg.fill(127,0,0); //red
     if (currDrawModeOn) fill(0,127,0); //green
     pg.noStroke();
     pg.lights();
-    pg.pushMatrix();
+  //  pg.pushMatrix();
     pg.translate(x, y, z);
     pg.sphere(10);
-    pg.popMatrix();
+    pg.rotateX(+mouseX/float(width) * 2 * PI);
+    //pg.popMatrix();
   }
 }
 
@@ -258,7 +273,9 @@ void drawShape(PGraphics shp, int z){
    shp.vertex(0,0,0*z);
    shp.endShape();
 }
-
+/*
+returns -1 left; 0 nothing; 1 right
+*/
 int checkSwipe(Frame frame){
   //Checking how many are extended and the angle
   int countAngle = 0;
