@@ -10,12 +10,24 @@ PVector temp; //holds the current position
 boolean currDrawModeOn = false;
 boolean prevDrawModeOn = false;
 boolean eraseCommand = false;
+boolean openMenu = false;
+boolean notSet = true;
 
 //To make it a smoother line
+int windSize = 400;
 int jump = 20;
 int prevX = 0;
 int prevY = 0;
 int prevZ = 0;
+int circleCount =0;
+int menuCounter = 0;
+int cornerThreshold =10;
+int maxMenuCount = 50;
+int holdTime = 250;
+
+int col1=150;
+int col2=150;
+int col3=150;
 
 
 void setup(){
@@ -53,15 +65,19 @@ void draw(){
   
   
   
-  ////////////CIRCLE GESTURES && ERASE///////////////
-  //for(Gesture gesture : frame.gestures())
-  //{
-  //    if(gesture.type() == Gesture.Type.TYPE_CIRCLE) 
-  //    {
-  //       println("CIRCLE");
-  //       eraseCommand = true;
-  //    }
-  //}
+  //////////CIRCLE GESTURES && ERASE///////////////
+  for(Gesture gesture : frame.gestures())
+  {
+      if(gesture.type() == Gesture.Type.TYPE_CIRCLE) 
+      {
+        circleCount++;
+         println("CIRCLE");
+         if(circleCount%30==0)
+            {eraseCommand = true;
+            circleCount =0;
+            }
+      }
+  }
   
   if(eraseCommand && (strokes.size()>0)) //delete current stroke
   {
@@ -69,6 +85,7 @@ void draw(){
      //points = strokes.get(strokes.size()-1); //make current stroke last stroke
      strokes.remove(strokes.size()-1); //remove last stroke from history
      points = new ArrayList<PVector>();
+    
   }
   
   
@@ -100,11 +117,103 @@ void draw(){
   //" y : "+ y +" z : "+ z);
   
   
+  
+  //MENU CHECKING
+
+  if (openMenu)
+  {
+     fill(150,150,100); 
+
+     background(0,0,0); //black
+     //Draw the rectangle
+     //Draw 7 boxes:
+     int xStart = int(windSize*0.33) ;
+     int yStart = int(windSize*0.25);
+     int yIncr = int((windSize*0.5)/7 );
+       textSize(15);
+      text("Hover over color to choose new color and wait!", windSize*0.08, windSize*0.05); 
+     
+     for(int i=0; i<7; i++)
+     {
+
+       if(i==0) fill(148, 0, 211 );
+        if(i==1) fill(0, 0, 255);
+        if(i==2) fill(0, 255, 0  );
+        if(i==3) fill(255, 255, 0  );
+        if(i==4) fill(255, 127, 0);
+        if(i==5) fill(255, 0, 0);
+        if(i==6) fill(255,255,255);
+
+       rect(xStart,yStart+i*yIncr, windSize*0.33 ,yIncr,1 );
+       
+     
+     }
+     
+     
+     //rect(xStart,yStart, windSize*0.33 ,windSize*0.5 ,7);
+     
+
+    
+    if(menuCounter==holdTime)
+    {
+      //Chose the color based on the xy coordinates at this time
+       int col = int((y - yStart)/yIncr);
+       setColors(col);
+      openMenu=false;
+    }
+    else
+      menuCounter+=1 ;
+ 
+   //add cursor only if not all the fingers are extended or you're pinching
+  if(numExtended(frame) < 5 || currDrawModeOn)
+  {
+    strokeWeight(1); 
+    fill(127,0,0); //red
+    if (currDrawModeOn) 
+    {
+      fill(0,127,0); //green
+    }
+    noStroke();
+    lights();
+    pushMatrix();
+    translate(x, y, z);
+    sphere(10);
+    popMatrix();
+  }
+  
+ 
+
+}
+
+  else
+  {
+  
+    //Check if this point is a corner point
+  if(x<cornerThreshold && menuCounter<maxMenuCount)
+  {
+    menuCounter++;
+  }
+  else
+  {
+    menuCounter=0;
+  }
+  
+  if(menuCounter>=maxMenuCount) 
+    {openMenu=true;
+      //reset maxCounter and wait for 3 seconds
+      menuCounter=0;
+    }
+
+  
+  
+  
+  
+  
   //If it's a new Stroke
   //end of stroke, must add current stroke to list of all strokes
   // and create new stroke
   ///////TAKE NOTE OF THIS LUCY
-  if(prevDrawModeOn && !currDrawModeOn)
+  if(prevDrawModeOn && !currDrawModeOn && !eraseCommand)
   {
      strokes.add(points); //add to all strokes
      points = new ArrayList<PVector>(); //new stroke
@@ -139,7 +248,8 @@ void draw(){
     beginShape();
     for (PVector p: stroke)
     {
-      stroke(p.z); //color is determined by z axis
+      if(notSet) stroke(p.z); //color is determined by z axis
+      else  stroke(col1,col2,col3);
       vertex(p.x,p.y,p.z);
     }
     endShape();
@@ -152,7 +262,8 @@ void draw(){
   beginShape();
   for (PVector p: points)
   {
-      stroke(p.z);
+    if(notSet) stroke(p.z); //color is determined by z axis
+      else  stroke(col1,col2,col3);
       vertex(p.x,p.y,p.z);
   }
   endShape();
@@ -165,7 +276,10 @@ void draw(){
   {
     strokeWeight(1); 
     fill(127,0,0); //red
-    if (currDrawModeOn) fill(0,127,0); //green
+    if (currDrawModeOn) 
+    {
+      fill(0,127,0); //green
+    }
     noStroke();
     lights();
     pushMatrix();
@@ -174,11 +288,14 @@ void draw(){
     popMatrix();
   }
   
-  //for checking against the previous frame
+  //for checking against the previous frame and to reset booleans
   prevDrawModeOn = currDrawModeOn;
   prevX = x;
   prevY = y;
   prevZ = z;
+  eraseCommand= false;
+  }
+  
 }
 
 int checkSwipe(Frame frame){
@@ -220,4 +337,53 @@ int numExtended(Frame frame)
     if(finger.isExtended()) count++;
   }
   return count;
+}
+
+
+void setColors( int col)
+{
+ if (col==0)
+       {
+         col1= 148;
+         col2=0;
+         col3=211;
+       }
+       if (col==1)
+       {
+         col1= 0;
+         col2=0;
+         col3=255;
+       }   
+       if (col==2)
+       {
+         col1= 0;
+         col2=255;
+         col3=0;
+       }   
+      if (col==3)
+       {
+         col1= 255;
+         col2=255;
+         col3=0;
+       }   
+
+       if (col==4)
+       {
+         col1= 255;
+         col2=127;
+         col3=0;
+       }  
+       if (col==5)
+       {
+         col1= 255;
+         col2=0;
+         col3=0;
+       }   
+       if (col==6)
+       {
+         col1= 255;
+         col2=255;
+         col3=255;
+       }         
+    notSet= false;
 }
