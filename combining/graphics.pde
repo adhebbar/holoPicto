@@ -2,6 +2,9 @@
 /* this is the first part of a two method series required for hologram, in between
  the actual objects will be drawn using drawSphere.
  */
+ 
+float currAngle = 0;
+
 void drawHolo() {
   
   ////////ALL THE ROTATION THINGS///////
@@ -26,7 +29,7 @@ void drawHolo() {
    // to be used this way
    pg[i].translate(width/4, 0, -200);
    executesideRotation(pg[i], i);
-   pg[i].rotateX(mouseX/float(width) * 2 * PI);
+   pg[i].rotateX(currAngle);
    //translate leapmotion coordinates and display coords
    pg[i].stroke(0,0,255);
    pg[i].line(100,0,0,0,0,0);
@@ -65,6 +68,14 @@ void drawAllTraces(PGraphics pg) {
   case GRAPH:
     drawImageDrawing3D(pg);
   }
+  
+  if(openMenu)
+    createMenu();
+  else
+  {
+    checkForMenu();
+  }
+  
   drawMouse(pg);
 }
 
@@ -99,16 +110,21 @@ void drawMouse(PGraphics pg){
   //add cursor only if not all the fingers are extended or you're pinching
   if(currGesture != allGesture.HANDOUT)
     {
-      pg.rotateX(-mouseX/float(width) * 2 * PI);
+      pg.rotateX(-currAngle);
       pg.strokeWeight(1); 
-      pg.fill(127,0,0); //red
-      if (currDrawModeOn) fill(0,127,0); //green
+      //pg.fill(127,0,0); //red
+      noFill();
+      if(currGesture.equals(allGesture.PINCH))
+      {
+        pg.fill(0,127,0); //green
+      }
+      else pg.fill(127,0,0); //red
       pg.noStroke();
       pg.lights();
       pg.pushMatrix();
       pg.translate(x, y, z);
       pg.sphere(10);
-      pg.rotateX(+mouseX/float(width) * 2 * PI);
+      pg.rotateX(+currAngle);
       pg.popMatrix();
     }
 }  

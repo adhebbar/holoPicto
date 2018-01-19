@@ -42,6 +42,7 @@ void drawDrawing3d(){
     case POINTING:
       break;
     case SWIPE:
+      currAngle += .1;
       break;
   }
   
@@ -53,7 +54,7 @@ void drawDrawing3d(){
   if(prevGesture == allGesture.PINCH && currGesture != allGesture.PINCH)
   {
      strokes.add(points); //add to all strokes
-     angles.add(-mouseX/float(width) * 2 * PI);
+     angles.add(new Float((-currAngle)));
      points = new ArrayList<PVector>(); //new stroke
   }
   drawHolo();
@@ -81,7 +82,7 @@ void drawImageDrawing3D(PGraphics pg){
     }
     
     //drawing current stroke
-    pg.rotateX(-mouseX/float(width) * 2 * PI);
+    pg.rotateX(-currAngle);
     pg.beginShape();
     
     for (PVector p: points)
@@ -91,5 +92,5 @@ void drawImageDrawing3D(PGraphics pg){
     }
     
     pg.endShape();
-    pg.rotateX(+mouseX/float(width) * 2 * PI);
+    pg.rotateX(+currAngle);
 }

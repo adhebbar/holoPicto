@@ -85,7 +85,6 @@ boolean checkCircle()
         return true;
       }
   }
-  println("CIRCLE"+circleCount);
   return false;
 }
 

@@ -94,11 +94,4 @@ void draw(){
   prevY = y;
   prevZ = z;
   prevGesture = currGesture;
-  
-  if(openMenu)
-    createMenu();
-  else
-  {
-    checkForMenu();
-  }
 }
