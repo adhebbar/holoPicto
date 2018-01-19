@@ -135,7 +135,8 @@ void drawMainMenu(){
   }
   else if(openColorMenu)
   {
-    createMainMenu();
+    tint(255, 50);
+    createDrawMenu();
   }
   else
   {

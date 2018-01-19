@@ -21,7 +21,7 @@ int z = 0;
 int prevX = 0;
 int prevY = 0;
 int prevZ = 0;
-int minX = -800;
+int minX = -500;
 int maxX = 150;
 int minY = -300;
 int maxY = 300;
@@ -56,7 +56,7 @@ void setup(){
   modeImgs[2] = loadImage("dragdrop.png");
   
   drawImgs[0] = loadImage("color.png");
-  drawImgs[1] = loadImage("lineThick.png");
+  drawImgs[1] = loadImage("linethick.png");
 }
 
 void draw(){
@@ -75,8 +75,8 @@ void draw(){
   x = -2*int(pos.getY())+150;
   z = 2*int(pos.getZ());
   temp = new PVector(x,y,z);
-  println("x : "+ x + 
-  " y : "+ y +" z : "+ z);
+  //println("x : "+ x + 
+  //" y : "+ y +" z : "+ z);
   
   ////DRAWING//////
   switch (currMode) {

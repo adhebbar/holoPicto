@@ -21,14 +21,14 @@ int imageWidth = menuHeight;
 int drawMenuWidth = winSize/10;
 enum drawSetting{COLOR, LINETHICK, NONE};
 
-drawSetting currDraw = drawSetting.COLOR;
+drawSetting currDraw = drawSetting.NONE;
 int[][] rgb = {{148, 0, 211 },{0, 0, 255},{0, 255, 0 },{255, 255, 0 },{255, 0, 0},{255, 255, 255}, {0,0,0} }; 
 
 void createMainMenu(){
 
    //println("dafuq");
    //menu screen
-   //pushMatrix();
+   pushMatrix();
    //translate(40,100,0);
    
    fill(255,255,255);
@@ -38,22 +38,40 @@ void createMainMenu(){
    rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
    //tint(0, 0, 0);
    
-   /*image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[1], winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
    popMatrix();
    //tint(255,255);
-    if(mouseY < 300){
+    /*if(mouseY < 300){
        openMainMenu=false;
      }*/
+     
+        //HIGHLIGHTING WHAT IT IS HOVERED OVER
+    if(y < minY+(maxY-minY)/3){
+      print("GRAPH");
+      selectModeMenu(mode.GRAPH);
+    }
+    else if(y < minY+2*((maxY-minY)/3)) {
+      selectModeMenu(mode.DRAWING3D);
+      print("DRAWING3D");
+    }
+    else selectModeMenu(mode.DRAGDROP);
+    
+    
+    if(currGesture == allGesture.PINCH){
+        currMode = highlighted;
+        openMainMenu = false;
+        openColorMenu = false;
+    }
 }
 
 void selectModeMenu(mode newMode){
   tint(255,255);
   switch(newMode){
    case DRAWING3D:
-     image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
      highlighted = mode.DRAWING3D;
      break;
    case DRAGDROP:
@@ -61,7 +79,7 @@ void selectModeMenu(mode newMode){
      highlighted = mode.DRAGDROP;
      break;
    case GRAPH:
-     image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
      highlighted = mode.GRAPH;
      break;
   }
@@ -88,25 +106,14 @@ void createDDBLocksMenu(){
    image(modeImgs[0], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
    popMatrix();
-    //HIGHLIGHTING WHAT IT IS HOVERED OVER
-   if(y < minY+(maxY-minY)/3) selectModeMenu(mode.GRAPH);
-   else if(y < minY+2*((maxY-minY)/3)) selectModeMenu(mode.DRAWING3D);
-   else selectModeMenu(mode.DRAGDROP);
-   
-   println("MATH??"+(minY+2*((maxY-minY)/3)));
-   
-   if(currGesture == allGesture.PINCH){
-       currMode = highlighted;
-       openMainMenu = false;
-       openColorMenu = false;
-   }
+
 }
 
 void createDrawMenu(){
    
    //println("dafuq");
    //menu screen
-   pushMatrix();
+   //pushMatrix();
    //translate(40,100,0);
    
    fill(255,255,255);
@@ -120,14 +127,24 @@ void createDrawMenu(){
    
    image(drawImgs[0], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight, imageWidth, imageWidth);
    image(drawImgs[1], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight*2.5, imageWidth, imageWidth);
+   
+   if(x < minX+(maxX-minX)/3) currDraw = drawSetting.COLOR;
+   else if(x < minX+2*((maxX-minX)/3)) currDraw = drawSetting.LINETHICK;
+   else{ currDraw = drawSetting.NONE;
+     openColorMenu = false;
+     //popMatrix()
+     return;
+     
+   }
+   
    //selectModeMenu(mode.DRAGDROP);//temp
    createDrawSettings();
-   popMatrix();
+   //popMatrix();
    //tint(255,255);
    
-    if(mouseY < 300){
+    /*if(mouseY < 300){
        openMainMenu=false;
-     }
+     }*/
 }
 void createDrawSettings(){
     switch(currDraw){
@@ -215,13 +232,14 @@ void checkForMainMenu()
   if(x < minX+cornerThreshold && currGesture != allGesture.PINCH)/*cornerThreshold && menuCounter<maxMenuCount*///x<cornerThreshold && menuCounter<maxMenuCount) !!!test*/
   {
     //openMainMenu = true;
-    println("less than cornerThreshold");
-    bottomMenuCounter++;
+    println("moreThanCornerThreshold");
+    topMenuCounter++;
   }
   else if(x>maxX-cornerThreshold && currGesture != allGesture.PINCH)
   {
-    println("moreThanCornerThreshold");
-    topMenuCounter++;
+    
+    println("less than cornerThreshold");
+    bottomMenuCounter++;
   }
   else
   {

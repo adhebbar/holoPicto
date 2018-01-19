@@ -81,10 +81,8 @@ void calculatePoints(){
   Scanner reader = new Scanner(System.in);  // Reading from System.in
   System.out.println("Enter your equation \n z = ");
   //int n = reader.nextInt(); // Scans the next token of the input as an int.
-
-    
-  equation = reader.next( );
   
+  equation = reader.next( );
   
   //once finished
   reader.close();
@@ -145,13 +143,12 @@ void drawImageGraph(PGraphics pg)
     pg.strokeWeight(10); //width of the stroke
     pg.noFill(); //??
 
-    //println("SIZE"+graphPoints.size());
+    println("SIZE"+graphPoints.size());
 
     
     pg.beginShape(POINTS);
 
     
-
     for (int i = 0; i< graphPoints.size(); i++)
     {
        //Float angle = graphAngles.get(i);

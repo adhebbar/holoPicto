@@ -1,6 +1,9 @@
 ArrayList<PVector> points = new ArrayList<PVector>(); //current stroke
 ArrayList<ArrayList> strokes = new ArrayList<ArrayList>(); //array of all strokes
 ArrayList<Float> angles = new ArrayList<Float>();
+ArrayList<Integer> thicks = new ArrayList<Integer>();
+ArrayList<Integer> colors = new ArrayList<Integer>();
+
 PVector temp;
 boolean currDrawModeOn = false;
 boolean prevDrawModeOn = false;
