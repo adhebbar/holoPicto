@@ -12,11 +12,14 @@ int col3=150;
 
 void createMenu(PGraphics pg2){
   //menu screen
+   pushMatrix();
+   translate(40,40,6);
+   fill(100,100,100);
    println("hello???" + openMenu);
-   rect(100,100,100,100);
+   //box(40);
    
-
-  
+   rect(100,100,100,100); 
+   popMatrix();
 }
 
 void createDrawingMenu(PGraphics pg2)  
