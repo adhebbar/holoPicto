@@ -1,7 +1,7 @@
 //Variables for the menu
-boolean openMenu = false;
+boolean openMainMenu = false;
 int menuCounter = 0;
-int cornerThreshold = 100;//-800;
+int cornerThreshold = 10;//-800;
 int maxMenuCount = 50;
 int holdTime = 250;
 
@@ -14,16 +14,15 @@ int menuHeight = winSize/10;
 int imageX = (winSize - menuWidth)/2;
 int imageWidth = 40;
 
-void createMainMenu(PGraphics pg2){
+void createMainMenu(){
 
-   
+   //println("dafuq");
    //menu screen
    pushMatrix();
    //translate(40,100,0);
    
-   //fill(255,255,255);
-   tint(255, 150);
-   println("hello???" + openMenu);
+   fill(255,255,255);
+   tint(255, 100);
    //box(40);
    
    rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
@@ -32,23 +31,81 @@ void createMainMenu(PGraphics pg2){
    image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
    image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-
+   //selectModeMenu(mode.DRAGDROP);//temp
    popMatrix();
-   tint(255,255);
+   //tint(255,255);
+    if(mouseY < 300){
+       openMainMenu=false;
+     }
 }
 
-void selectModeMenu(mode cur){
-  switch(cur){
+void selectModeMenu(mode newMode){
+  tint(255,255);
+  switch(newMode){
    case DRAWING3D:
      image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     break;
    case DRAGDROP:
      image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+     break;
    case GRAPH:
      image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     break;
   }
    
 }
 
+
+void createDDBLocksMenu(){
+
+   //println("dafuq");
+   //menu screen
+   pushMatrix();
+   //translate(40,100,0);
+   
+   fill(255,255,255);
+   tint(255, 100);
+   //box(40);
+   
+   rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
+   //tint(0, 0, 0);
+   
+   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   //selectModeMenu(mode.DRAGDROP);//temp
+   popMatrix();
+   //tint(255,255);
+    if(mouseY < 300){
+       openMainMenu=false;
+     }
+}
+
+void createDrawMenu(){
+
+   //println("dafuq");
+   //menu screen
+   pushMatrix();
+   //translate(40,100,0);
+   
+   fill(255,255,255);
+   tint(255, 100);
+   //box(40);
+   
+   rect((winSize - menuWidth)/2 , (winSize)/2 + menuHeight ,menuWidth, menuHeight, 20);
+   //tint(0, 0, 0);
+   
+   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   //selectModeMenu(mode.DRAGDROP);//temp
+   popMatrix();
+   //tint(255,255);
+    if(mouseY < 300){
+       openMainMenu=false;
+     }
+}
+/*
 void createDrawingMenu(PGraphics pg2)  
   {
     
@@ -76,7 +133,10 @@ void createDrawingMenu(PGraphics pg2)
 
        pg2.rect(xStart,yStart+i*yIncr, scrnSize*0.33 ,yIncr,1 );     
      
-     }   
+     }
+     if(mouseX < 300){
+       openMainMenu=false;
+     }
     //if(menuCounter==holdTime)
     //{
     //  //Chose the color based on the xy coordinates at this time
@@ -104,28 +164,31 @@ void createDrawingMenu(PGraphics pg2)
   //  popMatrix();
   //}
 }
+*/
 
-
-void checkForMenu()
+void checkForMainMenu()
 {
-  //    //Check if this point is a corner point
-  //if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
-  //{
-  //  println("less than cornerThreshold");
-  //  menuCounter++;
-  //}
-  //else
-  //{
-  //  menuCounter=0;
-  //}
+  //print("checking main menu...");
+  //Check if this point is a corner point
+  if(mouseY> 300 /*cornerThreshold && menuCounter<maxMenuCount*/)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
+  {
+    openMainMenu = true;
+    //println("less than cornerThreshold");
+    //menuCounter++;
+  }
+  else
+  {
+    openMainMenu = false;
+    //menuCounter=0;
+  }
   
-  //if(menuCounter>=maxMenuCount) 
-  //  {
-  //    openMenu=true;
-  //    //reset maxCounter and wait for 3 seconds
-  //    menuCounter=0;
-  //  } 
-  openMenu = true;
+  /*if(menuCounter>=maxMenuCount) 
+    {
+      openMainMenu=true;
+      //reset maxCounter and wait for 3 seconds
+      menuCounter=0;
+    } 
+  //openMainMenu = true;*/
 }
 
 /* sets menu colours */

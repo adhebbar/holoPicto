@@ -55,10 +55,11 @@ void drawHolo() {
    rotateZ(PI/2);
   }
   
-  text(mouseX, 0,0);
+  text(mouseX + " " + mouseY, 0,0);
   popMatrix();
   // helps for centering and to tell us where the x coordinate is
-  drawMenu(pg[0]);
+  drawMainMenu();
+  //print("finished drawing");
 }
 
 
@@ -126,12 +127,15 @@ void drawMouse(PGraphics pg){
     }
 } 
 
-void drawMenu(PGraphics pg){
-  
-  if(openMenu)
-    createMainMenu(pg);
+void drawMainMenu(){
+  //print("openMainMenu..." + openMainMenu);
+  if(openMainMenu){
+    tint(255, 50);
+    createMainMenu();
+  }
   else
   {
-    checkForMenu();
+    tint(255,255);
+    checkForMainMenu();
   }
 }
