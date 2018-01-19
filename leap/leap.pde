@@ -11,7 +11,6 @@ edge pairing of points.
 import ComputationalGeometry.*;
 IsoSkeleton skeleton;
 
-
 import javax.script.*;
 import java.util.*;
   
@@ -28,9 +27,7 @@ void setup() {
   prev=new PVector(X,Y,Z);
   // Create points to make the network
   PVector[] pts = new PVector[1000];
-  //for (int i=0; i<pts.length; i++) {
-  //  pts[i] = new PVector(random(-100, 100), random(-100, 100), random(-100, 100) );
-  //} 
+
   int radius = 10;
   int xBound1 = -11;
   int xBound2 = 11; 
@@ -81,27 +78,6 @@ int l=0;
 
       print("DONEE l is");
       println(l);
-
-
-
-
-
-//ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-//        Map<String, Object> vars = new HashMap<String, Object>();
-//        vars.put("x", 2);
-        
-//        vars.put("y", 1);
-//        vars.put("z", 3);
-//        try
-//        {
-//          Integer wee = Integer.parseInt( engine.eval("2*x+ y+ z ", new SimpleBindings(vars)).toString()  ) ;
-
-//        System.out.println(  "result = "+engine.eval("2*x+ y+ z ", new SimpleBindings(vars))     );
-//        }
-//catch (ScriptException se) {
-//    //System.out.println("Problem in eval:", se.getmessage());
-//}        
-
 }
 
 boolean isValidPoint(int x, int y, int z){
@@ -135,8 +111,7 @@ void draw() {
   float zm = 150;
   float sp = 0.001 * frameCount;
   camera(zm * cos(sp), zm * sin(sp), zm, 0, 0, 0, 0, 0, -1);
-  
-  
+  s
   
   noStroke();
   skeleton.plot(10.f * float(mouseX) / (2.0f*width), float(mouseY) / (2.0*height));  // Thickness as parameter
