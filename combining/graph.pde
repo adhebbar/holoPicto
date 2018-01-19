@@ -81,8 +81,10 @@ void calculatePoints(){
   Scanner reader = new Scanner(System.in);  // Reading from System.in
   System.out.println("Enter your equation \n z = ");
   //int n = reader.nextInt(); // Scans the next token of the input as an int.
-  
+
+    
   equation = reader.next( );
+  
   
   //once finished
   reader.close();
