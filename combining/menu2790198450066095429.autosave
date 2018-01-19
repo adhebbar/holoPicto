@@ -9,44 +9,21 @@ int col1=150;
 int col2=150;
 int col3=150;
 
-int menuWidth = winSize /3;
-int menuHeight = winSize/10;
-int imageX = (winSize - menuWidth)/2;
-int imageWidth = 40;
 
-void createMainMenu(PGraphics pg2){
-
-   
-   //menu screen
-   pushMatrix();
-   //translate(40,100,0);
-   
-   //fill(255,255,255);
-   tint(255, 150);
+void createMenu(PGraphics pg2){
+  //menu screen
    println("hello???" + openMenu);
-   //box(40);
+   pushMatrix();
+  translate(40,40,50);
+  fill(100);
+  rect(100,100,100,100);
+  popMatrix();
+  // Draw the offscreen buffer to the screen with image() 
+  //image(menu, 120, 60); 
    
-   rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
-   //tint(0, 0, 0);
    
-   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
 
-   popMatrix();
-   tint(255,255);
-}
-
-void selectModeMenu(mode cur){
-  switch(cur){
-   case DRAWING3D:
-     image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   case DRAGDROP:
-     image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   case GRAPH:
-     image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-  }
-   
+  
 }
 
 void createDrawingMenu(PGraphics pg2)  
@@ -108,24 +85,23 @@ void createDrawingMenu(PGraphics pg2)
 
 void checkForMenu()
 {
-  //    //Check if this point is a corner point
-  //if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
-  //{
-  //  println("less than cornerThreshold");
-  //  menuCounter++;
-  //}
-  //else
-  //{
-  //  menuCounter=0;
-  //}
+      //Check if this point is a corner point
+  if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
+  {
+    println("less than cornerThreshold");
+    menuCounter++;
+  }
+  else
+  {
+    menuCounter=0;
+  }
   
-  //if(menuCounter>=maxMenuCount) 
-  //  {
-  //    openMenu=true;
-  //    //reset maxCounter and wait for 3 seconds
-  //    menuCounter=0;
-  //  } 
-  openMenu = true;
+  if(menuCounter>=maxMenuCount) 
+    {
+      openMenu=true;
+      //reset maxCounter and wait for 3 seconds
+      menuCounter=0;
+    } 
 }
 
 /* sets menu colours */

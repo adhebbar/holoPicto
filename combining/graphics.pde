@@ -10,7 +10,7 @@ void drawHolo() {
   pushMatrix();
   ////////ALL THE ROTATION THINGS///////
   
-  translate(width/2,height/2,10);
+  translate(width/2,height/2,0);
   // so that each of the split screens will be rotated at 0 90 180 and 270 degrees 
   // so that the squares turn into rectangles and then diamonds to  be oriented correct
   rotateZ(PI/4);
@@ -129,7 +129,7 @@ void drawMouse(PGraphics pg){
 void drawMenu(PGraphics pg){
   
   if(openMenu)
-    createMenu(pg);
+    createMainMenu(pg);
   else
   {
     checkForMenu();

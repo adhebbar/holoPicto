@@ -33,6 +33,7 @@ allGesture prevGesture = allGesture.HANDOUT;
 //Mode
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
 mode currMode = mode.DRAWING3D;
+PImage img;
 
 void setup(){
   pg = new PGraphics[4];
@@ -42,6 +43,7 @@ void setup(){
       pg[i] = createGraphics(scrnSize, scrnSize, P3D);
   }
   controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
+  img = loadImage("color.png");
 }
 
 void draw(){
