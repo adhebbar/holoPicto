@@ -78,23 +78,24 @@ void createDrawingMenu(PGraphics pg2)
 
 void checkForMenu()
 {
-      //Check if this point is a corner point
-  if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
-  {
-    println("less than cornerThreshold");
-    menuCounter++;
-  }
-  else
-  {
-    menuCounter=0;
-  }
+  //    //Check if this point is a corner point
+  //if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
+  //{
+  //  println("less than cornerThreshold");
+  //  menuCounter++;
+  //}
+  //else
+  //{
+  //  menuCounter=0;
+  //}
   
-  if(menuCounter>=maxMenuCount) 
-    {
-      openMenu=true;
-      //reset maxCounter and wait for 3 seconds
-      menuCounter=0;
-    } 
+  //if(menuCounter>=maxMenuCount) 
+  //  {
+  //    openMenu=true;
+  //    //reset maxCounter and wait for 3 seconds
+  //    menuCounter=0;
+  //  } 
+  openMenu = true;
 }
 
 /* sets menu colours */
