@@ -7,7 +7,7 @@ Frame frame = controller.frame(); //This current frame
 //Split screen
 PGraphics pg[];
 PGraphics menu;
-int winSize = 400;
+int winSize = 900;
 int scrnSize = 3*winSize/4;
 int screenCoords[] = {0,0};
 float angleRotated = 0;
@@ -46,7 +46,7 @@ PImage[] drawImgs = new PImage[2];
 void setup(){
   pg = new PGraphics[4];
   menu = createGraphics(scrnSize, scrnSize, P3D);
-  size(400,400,P3D);
+  size(900,900,P3D);
   for(int i = 0; i < 4; i++){
       pg[i] = createGraphics(scrnSize, scrnSize, P3D);
   }
