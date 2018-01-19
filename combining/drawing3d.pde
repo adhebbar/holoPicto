@@ -108,7 +108,6 @@ void drawImageDrawing3D(PGraphics pg){
     
     for (PVector p: points)
     {
-      println(currColor);
       pg.stroke(rgb[currColor][0],rgb[currColor][1],rgb[currColor][2]); //color of the border
     pg.strokeWeight(currThick); //width of the stroke
     pg.noFill(); //??

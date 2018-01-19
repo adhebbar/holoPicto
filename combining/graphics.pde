@@ -73,6 +73,7 @@ void drawApplication(PGraphics pg) {
     drawImageDrawing3D(pg);
   case GRAPH:
     drawImageGraph(pg);
+    
   }
 
 }

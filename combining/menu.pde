@@ -139,15 +139,19 @@ void createDrawMenu(){
    
    image(drawImgs[0], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight, imageWidth, imageWidth);
    image(drawImgs[1], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight*2.5, imageWidth, imageWidth);
-   
+   println( minX+2*(maxX-minX)/3); //+ " " + minX+2*((maxX-minX)/3));
+   println("pinch: " + (currGesture == allGesture.PINCH));
    if(x < minX+(maxX-minX)/3) currDraw = drawSetting.COLOR;
-   else if(x < minX+2*((maxX-minX)/3)) currDraw = drawSetting.LINETHICK;
-   else{ currDraw = drawSetting.NONE;
-     openColorMenu = false;
-     //popMatrix()
-     return;
-     
+   else{
+   if(x < minX+2*(maxX-minX)/3){
+     currDraw = drawSetting.LINETHICK;}
+         else{ currDraw = drawSetting.NONE;
+           openColorMenu = false;
+           //popMatrix()
+           return;
+         }
    }
+     
    
    //selectModeMenu(mode.DRAGDROP);//temp
    createDrawSettings();
@@ -240,10 +244,11 @@ void drawLineThick(){
       ellipse(middleDrawX+drawColorWidth*(i-2.5),(winSize)/2 + menuHeight*24/8,2+i*3,2+i*3);
       if(minY+(numThick-i-1)*(maxY-minY)/numThick<y && y<=minY+(numThick -i)*(maxY-minY)/numThick){
         selectLineMenu(i);
-        if(currGesture == allGesture.PINCH)
+        if(currGesture == allGesture.PINCH){
            currThick = (i+1)*2;
            openColorMenu = false;
            break;
+        }
        }
 
    }
