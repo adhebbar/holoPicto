@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 //Variables for the menu
 boolean openMainMenu = false;
 boolean openColorMenu = false;
@@ -20,6 +20,7 @@ int imageWidth = menuHeight;
 
 int drawMenuWidth = winSize/10;
 enum drawSetting{COLOR, LINETHICK, NONE};
+
 drawSetting currDraw = drawSetting.COLOR;
 int[][] rgb = {{148, 0, 211 },{0, 0, 255},{0, 255, 0 },{255, 255, 0 },{255, 0, 0},{255, 255, 255}, {0,0,0} }; 
 
@@ -27,7 +28,7 @@ void createMainMenu(){
 
    //println("dafuq");
    //menu screen
-   pushMatrix();
+   //pushMatrix();
    //translate(40,100,0);
    
    fill(255,255,255);
@@ -52,15 +53,15 @@ void selectModeMenu(mode newMode){
   tint(255,255);
   switch(newMode){
    case DRAWING3D:
-     image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
      highlighted = mode.DRAWING3D;
      break;
    case DRAGDROP:
-     image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+     image(modeImgs[1], winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
      highlighted = mode.DRAGDROP;
      break;
    case GRAPH:
-     image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
      highlighted = mode.GRAPH;
      break;
   }
@@ -82,9 +83,9 @@ void createDDBLocksMenu(){
    rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
    //tint(0, 0, 0);
    
-   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[0], winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+   image(modeImgs[0], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
    popMatrix();
     //HIGHLIGHTING WHAT IT IS HOVERED OVER
