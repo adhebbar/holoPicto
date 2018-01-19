@@ -1,7 +1,7 @@
 //Variables for the menu
 boolean openMenu = false;
 int menuCounter = 0;
-int cornerThreshold = 10;//-800;
+int cornerThreshold = 100;//-800;
 int maxMenuCount = 50;
 int holdTime = 250;
 
@@ -9,7 +9,17 @@ int col1=150;
 int col2=150;
 int col3=150;
 
-void createMenu()  
+
+void createMenu(PGraphics pg2){
+  //menu screen
+   println("hello???" + openMenu);
+   rect(100,100,100,100);
+   
+
+  
+}
+
+void createDrawingMenu(PGraphics pg2)  
   {
     
      fill(150,150,100); 
@@ -17,8 +27,8 @@ void createMenu()
      background(0,0,0); //black
      //Draw the rectangle
      //Draw 7 boxes:
-     int xStart = int(winSize*0.33) ;
-     int yStart = int(winSize*0.25);
+     int xStart = int(0);//winSize*0.33) ;
+     int yStart = int(0);//winSize*0.25);
      int yIncr = int((winSize*0.5)/7 );
        textSize(15);
       text("Hover over color to choose new color and wait!", winSize*0.08, winSize*0.05); 
@@ -26,50 +36,50 @@ void createMenu()
      for(int i=0; i<7; i++)
      {
 
-       if(i==0) fill(148, 0, 211 );
-        if(i==1) fill(0, 0, 255);
-        if(i==2) fill(0, 255, 0  );
-        if(i==3) fill(255, 255, 0  );
-        if(i==4) fill(255, 127, 0);
-        if(i==5) fill(255, 0, 0);
-        if(i==6) fill(255,255,255);
+        if(i==0) pg2.fill(148, 0, 211 );
+        if(i==1) pg2.fill(0, 0, 255);
+        if(i==2) pg2.fill(0, 255, 0  );
+        if(i==3) pg2.fill(255, 255, 0  );
+        if(i==4) pg2.fill(255, 127, 0);
+        if(i==5) pg2.fill(255, 0, 0);
+        if(i==6) pg2.fill(255,255,255);
 
-       rect(xStart,yStart+i*yIncr, scrnSize*0.33 ,yIncr,1 );     
+       pg2.rect(xStart,yStart+i*yIncr, scrnSize*0.33 ,yIncr,1 );     
      
      }   
-    if(menuCounter==holdTime)
-    {
-      //Chose the color based on the xy coordinates at this time
-       int col = int((y - yStart)/yIncr);
-       setColors(col);
-      openMenu=false;
-    }
-    else
-      menuCounter+=1 ;
+    //if(menuCounter==holdTime)
+    //{
+    //  //Chose the color based on the xy coordinates at this time
+    //   int col = int((y - yStart)/yIncr);
+    //   setColors(col);
+    //  openMenu=false;
+    //}
+    //else
+    //  menuCounter+=1 ;
  
    //add cursor only if not all the fingers are extended or you're pinching
-  if(numExtended(frame) < 5 || currDrawModeOn)
-  {
-    strokeWeight(1); 
-    fill(127,0,0); //red
-    if (currDrawModeOn) 
-    {
-      fill(0,127,0); //green
-    }
-    noStroke();
-    lights();
-    pushMatrix();
-    translate(x, y, z);
-    sphere(10);
-    popMatrix();
-  }
+  //if(numExtended(frame) < 5 || currDrawModeOn)
+  //{
+  //  strokeWeight(1); 
+  //  fill(127,0,0); //red
+  //  if (currDrawModeOn) 
+  //  {
+  //    fill(0,127,0); //green
+  //  }
+  //  noStroke();
+  //  lights();
+  //  pushMatrix();
+  //  translate(x, y, z);
+  //  sphere(10);
+  //  popMatrix();
+  //}
 }
 
 
 void checkForMenu()
 {
       //Check if this point is a corner point
-  if(x<cornerThreshold && menuCounter<maxMenuCount)
+  if(true)//mouseX<cornerThreshold && menuCounter<maxMenuCount)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
   {
     println("less than cornerThreshold");
     menuCounter++;

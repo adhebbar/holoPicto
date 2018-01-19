@@ -58,6 +58,7 @@ void drawDrawing3d(){
      points = new ArrayList<PVector>(); //new stroke
   }
   drawHolo();
+  //drawMenu();
 }
 
 void drawImageDrawing3D(PGraphics pg){

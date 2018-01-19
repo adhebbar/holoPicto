@@ -7,7 +7,9 @@ float currAngle = 0;
 
 void drawHolo() {
   
+  pushMatrix();
   ////////ALL THE ROTATION THINGS///////
+  
   translate(width/2,height/2,10);
   // so that each of the split screens will be rotated at 0 90 180 and 270 degrees 
   // so that the squares turn into rectangles and then diamonds to  be oriented correct
@@ -42,8 +44,8 @@ void drawHolo() {
    
    
    //////DRAWING THE LINES
-   drawAllTraces(pg[i]);
-   
+   drawApplication(pg[i]);
+   drawMouse(pg[i]);
   
    pg[i].noFill();
    pg[i].popMatrix();
@@ -52,12 +54,15 @@ void drawHolo() {
    // moves the coordinate for the next split screen so that it is rotated 90 degrees
    rotateZ(PI/2);
   }
-  // helps for centering and to tell us where the x coordinate is
+  
   text(mouseX, 0,0);
+  popMatrix();
+  // helps for centering and to tell us where the x coordinate is
+  drawMenu(pg[0]);
 }
 
 
-void drawAllTraces(PGraphics pg) {
+void drawApplication(PGraphics pg) {
   switch (currMode){
   
   ////ERASING
@@ -68,15 +73,7 @@ void drawAllTraces(PGraphics pg) {
   case GRAPH:
     drawImageDrawing3D(pg);
   }
-  
-  if(openMenu)
-    createMenu();
-  else
-  {
-    checkForMenu();
-  }
-  
-  drawMouse(pg);
+
 }
 
 // rotates the coordinate system so that the system will be what is necessary for the 
@@ -127,4 +124,14 @@ void drawMouse(PGraphics pg){
       pg.rotateX(+currAngle);
       pg.popMatrix();
     }
-}  
+} 
+
+void drawMenu(PGraphics pg){
+  
+  if(openMenu)
+    createMenu(pg);
+  else
+  {
+    checkForMenu();
+  }
+}
