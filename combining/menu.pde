@@ -49,15 +49,20 @@ void createMainMenu(){
      }*/
      
         //HIGHLIGHTING WHAT IT IS HOVERED OVER
-    if(y < minY+(maxY-minY)/3){
+    if(y < minY+2*((maxY-minY)/3)) {
       print("GRAPH");
       selectModeMenu(mode.GRAPH);
     }
-    else if(y < minY+2*((maxY-minY)/3)) {
+    
+    else if(y < minY+(maxY-minY)/3){
       selectModeMenu(mode.DRAWING3D);
       print("DRAWING3D");
     }
-    else selectModeMenu(mode.DRAGDROP);
+    else{
+      selectModeMenu(mode.DRAGDROP);
+      print("DRAGDROP");
+      
+    }
     
     
     if(currGesture == allGesture.PINCH){
