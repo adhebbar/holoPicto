@@ -21,6 +21,13 @@ int z = 0;
 int prevX = 0;
 int prevY = 0;
 int prevZ = 0;
+int minX = -800;
+int maxX = 150;
+int minY = -300;
+int maxY = 300;
+int minZ = -scrnSize;
+int maxZ = scrnSize;
+
 
 
 //Gesture
@@ -31,10 +38,11 @@ allGesture prevGesture = allGesture.HANDOUT;
 
 
 //Mode
+int numModes = 3;
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
-mode currMode = mode.GRAPH;
-PImage img;
-
+mode currMode = mode.DRAWING3D;
+PImage[] modeImgs = new PImage[numModes];
+PImage[] drawImgs = new PImage[2];
 void setup(){
   pg = new PGraphics[4];
   menu = createGraphics(scrnSize, scrnSize, P3D);
@@ -43,7 +51,12 @@ void setup(){
       pg[i] = createGraphics(scrnSize, scrnSize, P3D);
   }
   controller.enableGesture(Gesture.Type.TYPE_CIRCLE);
-  img = loadImage("color.png");
+  modeImgs[0] = loadImage("draw.png");
+  modeImgs[1] = loadImage("graph.png");
+  modeImgs[2] = loadImage("dragdrop.png");
+  
+  drawImgs[0] = loadImage("color.png");
+  drawImgs[1] = loadImage("lineThick.png");
 }
 
 void draw(){
@@ -53,11 +66,7 @@ void draw(){
   Hand hand = frame.hands().frontmost(); //frontmost hand
 
   ////GET THE GESTURE
-  if(checkPinch()) currGesture = allGesture.PINCH;
-  if(checkPoint()) currGesture = allGesture.POINTING;
-  if(checkCircle()) currGesture = allGesture.CIRCLE;
-  if(checkHandout()) currGesture = allGesture.HANDOUT;
-  if(checkSwipe() != 0) currGesture = allGesture.SWIPE;
+  getGesture();
   
   
   ////GET THE POSITION
@@ -66,8 +75,8 @@ void draw(){
   x = -2*int(pos.getY())+150;
   z = 2*int(pos.getZ());
   temp = new PVector(x,y,z);
-  //println("x : "+ x + 
-  //" y : "+ y +" z : "+ z);
+  println("x : "+ x + 
+  " y : "+ y +" z : "+ z);
   
   ////DRAWING//////
   switch (currMode) {

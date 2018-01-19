@@ -10,6 +10,7 @@ boolean prevDrawModeOn = false;
 int jump = 20;
 
 void drawDrawing3d(){
+  if(!(openColorMenu || openMainMenu)){
   switch (currGesture){
     
     ////ERASING
@@ -27,6 +28,7 @@ void drawDrawing3d(){
     case PINCH:
         int totalDiff = 0;
         if(points.size()>1){
+         
           totalDiff = x-prevX;
           totalDiff += y-prevY;
           totalDiff += z-prevZ;
@@ -42,7 +44,12 @@ void drawDrawing3d(){
     case POINTING:
       break;
     case SWIPE:
-      currAngle += .1;
+      if(checkSwipe() == -1){
+        currAngle += -.1;
+      }
+      if(checkSwipe() == 1){
+         currAngle += .1; 
+      }
       break;
   }
   
@@ -57,6 +64,8 @@ void drawDrawing3d(){
      angles.add(new Float((-currAngle)));
      points = new ArrayList<PVector>(); //new stroke
   }
+  }
+  
   drawHolo();
   //drawMenu();
 }

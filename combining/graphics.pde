@@ -106,7 +106,7 @@ void drawShape(PGraphics shp, int z){
 
 void drawMouse(PGraphics pg){
   //add cursor only if not all the fingers are extended or you're pinching
-  if(currGesture != allGesture.HANDOUT)
+  if(currGesture != allGesture.HANDOUT && !(openColorMenu || openMainMenu))
     {
       pg.rotateX(-currAngle);
       pg.strokeWeight(1); 
@@ -133,9 +133,14 @@ void drawMainMenu(){
     tint(255, 50);
     createMainMenu();
   }
+  else if(openColorMenu)
+  {
+    createMainMenu();
+  }
   else
   {
     tint(255,255);
     checkForMainMenu();
   }
+
 }
