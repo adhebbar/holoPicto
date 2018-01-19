@@ -32,7 +32,7 @@ allGesture prevGesture = allGesture.HANDOUT;
 
 //Mode
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
-mode currMode = mode.DRAWING3D;
+mode currMode = mode.GRAPH;
 PImage img;
 
 void setup(){
@@ -61,7 +61,7 @@ void draw(){
   
   
   ////GET THE POSITION
-  Vector pos = hand.palmPosition();
+  com.leapmotion.leap.Vector pos = hand.palmPosition();
   y = -2*int(pos.getX());
   x = -2*int(pos.getY())+150;
   z = 2*int(pos.getZ());
@@ -78,7 +78,7 @@ void draw(){
       drawDrawing3d();
       break;
     case GRAPH:
-      drawDrawing3d();
+      drawGraph();
       break;
   }
   

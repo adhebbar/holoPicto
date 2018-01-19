@@ -39,7 +39,7 @@ int checkSwipe(){
     Finger finger = new Finger(p);
     if(finger.isExtended())
     {
-      Vector pointingToward = p.direction();
+      com.leapmotion.leap.Vector pointingToward = p.direction();
       countAngle = countAngle + int(pointingToward.yaw());
     }
   }
