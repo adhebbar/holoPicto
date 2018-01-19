@@ -1,26 +1,27 @@
 /*
 returns -1 left; 0 nothing; 1 right
 */
-import com.leapmotion.leap.*;
 
 float pinchThresh = 0.4;
+int circleCount = 0;
+int circleNeeded = 20;
 
 /* Checks for pinching, returns true if found in current frame, 
   false otherwise*/
-Boolean checkPinch(Frame frame)
+Boolean checkPinch()
 {
   Hand hand = frame.hands().frontmost(); //frontmost hand
   float pinch = hand.pinchStrength(); //ranges from 0 to 1
-  String pinchDetected = "pinch not detected";
+  //String pinchDetected = "pinch not detected";
   if(pinch>pinchThresh) 
   {
-    pinchDetected = "pinch detected";
+    //pinchDetected = "pinch detected";
     //debugging
-    println(pinchDetected);
+    //println(pinchDetected);
     return true;
   }
   //debugging
-  println(pinchDetected);
+  //println(pinchDetected);
   return false;
 
 }
@@ -28,7 +29,7 @@ Boolean checkPinch(Frame frame)
 
 
 /* checks for swipe gesture */
-int checkSwipe(Frame frame){
+int checkSwipe(){
   //Checking how many are extended and the angle
   int countAngle = 0;
   
@@ -71,11 +72,31 @@ int numExtended(Frame frame)
 
 /* Checks for circle gesture, returns true if found in current frame, 
   false otherwise*/
-boolean checkCircle(Frame frame)
+boolean checkCircle()
 {
   for(Gesture gesture : frame.gestures())
   {
-      if(gesture.type() == Gesture.Type.TYPE_CIRCLE) return true;
+      if(gesture.type() == Gesture.Type.TYPE_CIRCLE){
+        println("FOUND");
+        circleCount++;
+      }
+      if(circleCount%circleNeeded == 0){
+        circleCount = 0;
+        return true;
+      }
   }
+  println("CIRCLE"+circleCount);
+  return false;
+}
+
+boolean checkHandout()
+{
+  if(numExtended(frame) == 5) return true;
+  return false;
+}
+
+boolean checkPoint()
+{
+  if(numExtended(frame) >= 1) return true;
   return false;
 }
