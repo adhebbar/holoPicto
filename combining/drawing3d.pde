@@ -13,6 +13,7 @@ boolean prevDrawModeOn = false;
 int jump = 20;
 
 void drawDrawing3d(){
+  println("DRAWING3D");
   if(!(openColorMenu || openMainMenu)){
   switch (currGesture){
     

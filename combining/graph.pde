@@ -22,22 +22,15 @@ String equation;
 void drawGraph(){
   
     
-  
-  
+  print("GRAPH IS WORKING");
+  if(!(openColorMenu || openMainMenu)){
   if(calculated == false) calculatePoints();
   
-    switch (currGesture){
+   switch (currGesture){
     
     ////ERASING
     case CIRCLE:
-        if(strokes.size()>0)
-        {
-          strokes.remove(strokes.size()-1); //remove last stroke from history
-          points = new ArrayList<PVector>();
-        }
         break;
-        
-        
         
     /////POINTING
     case PINCH:
@@ -48,11 +41,16 @@ void drawGraph(){
     case POINTING:
       break;
     case SWIPE:
-      currAngle += .1;
+      if(checkSwipe() == -1){
+        currAngle += -.1;
+      }
+      if(checkSwipe() == 1){
+         currAngle += .1; 
+      }
       break;
     }
       
-      
+  }
   //drawImageGraph();
   drawHolo();
 }
