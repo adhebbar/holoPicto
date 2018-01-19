@@ -26,7 +26,6 @@ int[][] rgb = {{148, 0, 211 },{0, 0, 255},{0, 255, 0 },{255, 255, 0 },{255, 0, 0
 
 void createMainMenu(){
 
-   //println("dafuq");
    //menu screen
    pushMatrix();
    //translate(40,100,0);
@@ -192,6 +191,16 @@ void drawColor(){
       }
       }
       
+      
+       if(minY+i*(maxY-minY)/numColors<y && y<=minY+(i+1)*(maxY-minY)/numColors){
+         selectColorMenu(i);
+         currColor = i;
+       }
+
+     
+   }
+      
+      
    }
    noStroke();
 
@@ -202,7 +211,7 @@ void drawColor(){
   Select color based on number in the rgb array
 */
 void selectColorMenu(int x){
-  fill(rgb[x][0],rgb[x][1],rgb[x][2]);
+  fill(rgb[x][0]/2,rgb[x][1]/2,rgb[x][2]/2);
   stroke(255);
   //tint(255,200);
   rect(middleDrawX+drawColorWidth*(x-3) , (winSize)/2 + menuHeight*10/8 ,drawColorWidth, menuHeight/2);
@@ -223,6 +232,11 @@ void drawLineThick(){
    //draw circles;
    for(int i = 0; i < numThick; i++){
       ellipse(middleDrawX+drawColorWidth*(i-2.5),(winSize)/2 + menuHeight*24/8,2+i*3,2+i*3);
+      if(minY+i*(maxY-minY)/numThick<y && y<=minY+(i+1)*(maxY-minY)/numThick){
+        selectLineMenu(i);
+         currThick = i;
+       }
+
    }
    //selectLineMenu(5);
    fill(255);
