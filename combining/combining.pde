@@ -40,10 +40,11 @@ allGesture prevGesture = allGesture.HANDOUT;
 //Mode
 int numModes = 3;
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
-mode currMode = mode.DRAWING3D;
+mode currMode = mode.DRAGDROP;
 PImage[] modeImgs = new PImage[numModes];
 PImage[] drawImgs = new PImage[2];
 void setup(){
+  pyrSet();
   pg = new PGraphics[4];
   menu = createGraphics(scrnSize, scrnSize, P3D);
   size(1000,1000,P3D);//displayWidth,displayHeight,P3D);
@@ -97,4 +98,6 @@ void draw(){
   prevY = y;
   prevZ = z;
   prevGesture = currGesture;
+  println("MODEEE");
+  println(currMode);
 }
