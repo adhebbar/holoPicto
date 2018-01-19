@@ -12,7 +12,12 @@ int col3=150;
 int menuWidth = winSize /3;
 int menuHeight = winSize/10;
 int imageX = (winSize - menuWidth)/2;
-int imageWidth = 40;
+int imageWidth = menuHeight;
+
+int drawMenuWidth = winSize/10;
+enum drawSetting{COLOR, LINETHICK, NONE};
+drawSetting currDraw = drawSetting.COLOR;
+int[][] rgb = {{148, 0, 211 },{0, 0, 255},{0, 255, 0 },{255, 255, 0 },{255, 0, 0},{255, 255, 255}, {0,0,0} }; 
 
 void createMainMenu(){
 
@@ -28,7 +33,7 @@ void createMainMenu(){
    rect((winSize - menuWidth)/2 , winSize - menuHeight ,menuWidth, menuHeight, 20);
    //tint(0, 0, 0);
    
-   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   /*image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
    image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
@@ -36,7 +41,7 @@ void createMainMenu(){
    //tint(255,255);
     if(mouseY < 300){
        openMainMenu=false;
-     }
+     }*/
 }
 
 void selectModeMenu(mode newMode){
@@ -82,7 +87,7 @@ void createDDBLocksMenu(){
 }
 
 void createDrawMenu(){
-
+   
    //println("dafuq");
    //menu screen
    pushMatrix();
@@ -92,79 +97,101 @@ void createDrawMenu(){
    tint(255, 100);
    //box(40);
    
-   rect((winSize - menuWidth)/2 , (winSize)/2 + menuHeight ,menuWidth, menuHeight, 20);
-   //tint(0, 0, 0);
+   rect((winSize - drawMenuWidth)/2 , (winSize)/2 + menuHeight ,drawMenuWidth, menuHeight, 20);
+   rect((winSize - drawMenuWidth)/2 , (winSize)/2 + menuHeight*2.5 ,drawMenuWidth, menuHeight, 20);
    
-   image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+   tint(255, 100);
+   
+   image(img, (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight, imageWidth, imageWidth);
+   image(img, (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight*2.5, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
+   createDrawSettings();
    popMatrix();
    //tint(255,255);
+   
     if(mouseY < 300){
        openMainMenu=false;
      }
 }
-/*
-void createDrawingMenu(PGraphics pg2)  
-  {
-    
-     fill(150,150,100); 
-
-     background(0,0,0); //black
-     //Draw the rectangle
-     //Draw 7 boxes:
-     int xStart = int(0);//winSize*0.33) ;
-     int yStart = int(0);//winSize*0.25);
-     int yIncr = int((winSize*0.5)/7 );
-       textSize(15);
-      text("Hover over color to choose new color and wait!", winSize*0.08, winSize*0.05); 
-     
-     for(int i=0; i<7; i++)
-     {
-
-        if(i==0) pg2.fill(148, 0, 211 );
-        if(i==1) pg2.fill(0, 0, 255);
-        if(i==2) pg2.fill(0, 255, 0  );
-        if(i==3) pg2.fill(255, 255, 0  );
-        if(i==4) pg2.fill(255, 127, 0);
-        if(i==5) pg2.fill(255, 0, 0);
-        if(i==6) pg2.fill(255,255,255);
-
-       pg2.rect(xStart,yStart+i*yIncr, scrnSize*0.33 ,yIncr,1 );     
-     
-     }
-     if(mouseX < 300){
-       openMainMenu=false;
-     }
-    //if(menuCounter==holdTime)
-    //{
-    //  //Chose the color based on the xy coordinates at this time
-    //   int col = int((y - yStart)/yIncr);
-    //   setColors(col);
-    //  openMenu=false;
-    //}
-    //else
-    //  menuCounter+=1 ;
- 
-   //add cursor only if not all the fingers are extended or you're pinching
-  //if(numExtended(frame) < 5 || currDrawModeOn)
-  //{
-  //  strokeWeight(1); 
-  //  fill(127,0,0); //red
-  //  if (currDrawModeOn) 
-  //  {
-  //    fill(0,127,0); //green
-  //  }
-  //  noStroke();
-  //  lights();
-  //  pushMatrix();
-  //  translate(x, y, z);
-  //  sphere(10);
-  //  popMatrix();
-  //}
+void createDrawSettings(){
+    switch(currDraw){
+      case COLOR:
+        drawColor();
+        break;
+      case LINETHICK:
+        drawLineThick();
+        break;
+      case NONE:
+        break;
+    }
 }
+
+int drawColorWidth = drawMenuWidth/2;
+int middleDrawX = (winSize - drawMenuWidth)*17/32;
+void drawColor(){
+   int numColors = rgb.length;
+   
+   fill(100);
+   noStroke();
+   for(int i = 0; i < numColors; i++){
+     fill(rgb[i][0],rgb[i][1],rgb[i][2]); 
+     if(i==numColors-1){
+        stroke(100);
+        rect(middleDrawX+drawColorWidth*(i-3) , (winSize)/2 + menuHeight*10/8 ,drawColorWidth, menuHeight/2, 0,10,10,0);
+      }
+      else{
+      if(i==0){
+        rect(middleDrawX+drawColorWidth*(i-3) , (winSize)/2 + menuHeight*10/8 ,drawColorWidth, menuHeight/2, 10,0,0,10);
+      }
+      else{
+        rect(middleDrawX+drawColorWidth*(i-3) , (winSize)/2 + menuHeight*10/8 ,drawColorWidth, menuHeight/2);
+      }
+      }
+      
+   }
+   noStroke();
+
+   //selectColorMenu(1);
+   fill(255);
+}
+/*
+  Select color based on number in the rgb array
 */
+void selectColorMenu(int x){
+  fill(rgb[x][0],rgb[x][1],rgb[x][2]);
+  stroke(255);
+  //tint(255,200);
+  rect(middleDrawX+drawColorWidth*(x-3) , (winSize)/2 + menuHeight*10/8 ,drawColorWidth, menuHeight/2);
+  noStroke();
+   
+}
+
+void drawLineThick(){
+   int numThick = 7;
+   int drawColorWidth = drawMenuWidth/2;
+   int middleDrawX = (winSize - drawMenuWidth)*17/32;
+   fill(255);
+   noStroke();
+   //draw rectangle;
+   rect(middleDrawX-drawColorWidth*3 , (winSize)/2 + menuHeight*22/8 ,drawColorWidth*7, menuHeight/2, 10, 10, 10, 10);
+
+   fill(0);
+   //draw circles;
+   for(int i = 0; i < numThick; i++){
+      ellipse(middleDrawX+drawColorWidth*(i-2.5),(winSize)/2 + menuHeight*24/8,2+i*3,2+i*3);
+   }
+   //selectLineMenu(5);
+   fill(255);
+}
+
+void selectLineMenu(int x){
+  stroke(200);
+  fill(200);
+  //tint(255,200);
+  ellipse(middleDrawX+drawColorWidth*(x-2.5),(winSize)/2 + menuHeight*24/8,2+x*3,2+x*3);
+  noStroke();
+   
+}
 
 void checkForMainMenu()
 {
@@ -189,53 +216,4 @@ void checkForMainMenu()
       menuCounter=0;
     } 
   //openMainMenu = true;*/
-}
-
-/* sets menu colours */
-void setColors( int col)
-{
- if (col==0)
-       {
-         col1= 148;
-         col2=0;
-         col3=211;
-       }
-       if (col==1)
-       {
-         col1= 0;
-         col2=0;
-         col3=255;
-       }   
-       if (col==2)
-       {
-         col1= 0;
-         col2=255;
-         col3=0;
-       }   
-      if (col==3)
-       {
-         col1= 255;
-         col2=255;
-         col3=0;
-       }   
-
-       if (col==4)
-       {
-         col1= 255;
-         col2=127;
-         col3=0;
-       }  
-       if (col==5)
-       {
-         col1= 255;
-         col2=0;
-         col3=0;
-       }   
-       if (col==6)
-       {
-         col1= 255;
-         col2=255;
-         col3=255;
-       }         
-    notSet= false;
 }

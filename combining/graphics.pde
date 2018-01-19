@@ -131,7 +131,7 @@ void drawMainMenu(){
   //print("openMainMenu..." + openMainMenu);
   if(openMainMenu){
     tint(255, 50);
-    createMainMenu();
+    createDrawMenu();
   }
   else
   {
