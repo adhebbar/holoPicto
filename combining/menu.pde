@@ -118,8 +118,8 @@ void createDrawMenu(){
    
    tint(255, 100);
    
-   image(img, (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight, imageWidth, imageWidth);
-   image(img, (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight*2.5, imageWidth, imageWidth);
+   image(drawImgs[0], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight, imageWidth, imageWidth);
+   image(drawImgs[1], (winSize - drawMenuWidth)/2, (winSize)/2 + menuHeight*2.5, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
    createDrawSettings();
    popMatrix();
