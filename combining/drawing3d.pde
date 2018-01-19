@@ -66,6 +66,8 @@ void drawDrawing3d(){
   {
      strokes.add(points); //add to all strokes
      angles.add(new Float((-currAngle)));
+     colors.add(currColor);
+     thicks.add(currThick);
      points = new ArrayList<PVector>(); //new stroke
   }
   }
@@ -75,33 +77,42 @@ void drawDrawing3d(){
 }
 
 void drawImageDrawing3D(PGraphics pg){
-    //Line attributes
-    pg.stroke(126); //color of the border
-    pg.strokeWeight(10); //width of the stroke
-    pg.noFill(); //??
+    
     //drawing history of strokes
     for (int i = 0; i< strokes.size(); i++)
     {
+      //Line attributes
+    pg.stroke(rgb[colors.get(i)][0],rgb[colors.get(i)][1],rgb[colors.get(i)][2]); //color of the border
+    pg.strokeWeight(thicks.get(i)); //width of the stroke
+    pg.noFill(); //??
       ArrayList<PVector> stroke = strokes.get(i);
       Float angle = angles.get(i);
       pg.rotateX(angle);
       pg.beginShape();
       for (PVector p : stroke)
       {
-        pg.stroke(p.z); //color is determined by z axis
+        //pg.stroke(p.z); //color is determined by z axis
         pg.vertex(p.x,p.y,p.z);
       }
       pg.endShape();
       pg.rotateX(-angle);
     }
     
+    ////Line attributes
+    //pg.stroke(rgb[colors.get(currColor)][0],rgb[colors.get(currColor)][1],rgb[colors.get(currColor)][2]); //color of the border
+    //pg.strokeWeight(currThick); //width of the stroke
+    //pg.noFill(); //??
     //drawing current stroke
     pg.rotateX(-currAngle);
     pg.beginShape();
     
     for (PVector p: points)
     {
-        pg.stroke(p.z);
+      println(currColor);
+      pg.stroke(rgb[currColor][0],rgb[currColor][1],rgb[currColor][2]); //color of the border
+    pg.strokeWeight(currThick); //width of the stroke
+    pg.noFill(); //??
+        //pg.stroke(p.z);
         pg.vertex(p.x,p.y,p.z);
     }
     

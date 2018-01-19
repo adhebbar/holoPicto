@@ -23,6 +23,8 @@ enum drawSetting{COLOR, LINETHICK, NONE};
 
 drawSetting currDraw = drawSetting.NONE;
 int[][] rgb = {{148, 0, 211 },{0, 0, 255},{0, 255, 0 },{255, 255, 0 },{255, 0, 0},{255, 255, 255}, {0,0,0} }; 
+int currColor = 5;
+int currThick = 10;
 
 void createMainMenu(){
 
@@ -192,13 +194,17 @@ void drawColor(){
       }
       
       
-       if(minY+i*(maxY-minY)/numColors<y && y<=minY+(i+1)*(maxY-minY)/numColors){
+       if(minY+(numColors - i - 1)*(maxY-minY)/numColors<y && y<=minY+(numColors - i)*(maxY-minY)/numColors){
          selectColorMenu(i);
-         currColor = i;
+         if(currGesture == allGesture.PINCH){
+           currColor = i;
+           openColorMenu = false;
+           break;
+         }
        }
 
      
-   }
+   
       
       
    }
@@ -232,9 +238,12 @@ void drawLineThick(){
    //draw circles;
    for(int i = 0; i < numThick; i++){
       ellipse(middleDrawX+drawColorWidth*(i-2.5),(winSize)/2 + menuHeight*24/8,2+i*3,2+i*3);
-      if(minY+i*(maxY-minY)/numThick<y && y<=minY+(i+1)*(maxY-minY)/numThick){
+      if(minY+(numThick-i-1)*(maxY-minY)/numThick<y && y<=minY+(numThick -i)*(maxY-minY)/numThick){
         selectLineMenu(i);
-         currThick = i;
+        if(currGesture == allGesture.PINCH)
+           currThick = (i+1)*2;
+           openColorMenu = false;
+           break;
        }
 
    }
