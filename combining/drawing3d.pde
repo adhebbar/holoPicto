@@ -42,6 +42,7 @@ void drawDrawing3d(){
     case POINTING:
       break;
     case SWIPE:
+      currAngle += .1;
       break;
   }
   
@@ -50,11 +51,46 @@ void drawDrawing3d(){
   //end of stroke, must add current stroke to list of all strokes
   // and create new stroke
   //// So I changed the foll line here but not sure about angle
-  if(prevGesture == allGesture.PINCH && currGesture != allGesture.PINCH && currGesture != allGesture.CIRCLE && strokes.size()>=1)
+  if(prevGesture == allGesture.PINCH && currGesture != allGesture.PINCH)
   {
      strokes.add(points); //add to all strokes
-     angles.add(-mouseX/float(width) * 2 * PI);
+     angles.add(new Float((-currAngle)));
      points = new ArrayList<PVector>(); //new stroke
   }
   drawHolo();
+}
+
+void drawImageDrawing3D(PGraphics pg){
+    //Line attributes
+    pg.stroke(126); //color of the border
+    pg.strokeWeight(10); //width of the stroke
+    pg.noFill(); //??
+    //drawing history of strokes
+    for (int i = 0; i< strokes.size(); i++)
+    {
+      ArrayList<PVector> stroke = strokes.get(i);
+      Float angle = angles.get(i);
+      pg.rotateX(angle);
+      pg.beginShape();
+      for (PVector p : stroke)
+      {
+        pg.stroke(p.z); //color is determined by z axis
+        pg.vertex(p.x,p.y,p.z);
+      }
+      pg.endShape();
+      pg.rotateX(-angle);
+    }
+    
+    //drawing current stroke
+    pg.rotateX(-currAngle);
+    pg.beginShape();
+    
+    for (PVector p: points)
+    {
+        pg.stroke(p.z);
+        pg.vertex(p.x,p.y,p.z);
+    }
+    
+    pg.endShape();
+    pg.rotateX(+currAngle);
 }
