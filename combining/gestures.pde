@@ -4,7 +4,7 @@ returns -1 left; 0 nothing; 1 right
 
 float pinchThresh = 0.4;
 int circleCount = 0;
-int circleNeeded = 20;
+int circleNeeded = 40;
 
 /* Checks for pinching, returns true if found in current frame, 
   false otherwise*/
@@ -77,9 +77,9 @@ boolean checkCircle()
   for(Gesture gesture : frame.gestures())
   {
       if(gesture.type() == Gesture.Type.TYPE_CIRCLE){
-        println("FOUND");
         circleCount++;
       }
+      
       if(circleCount%circleNeeded == 0){
         circleCount = 0;
         return true;
