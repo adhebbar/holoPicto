@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 //Variables for the menu
 boolean openMainMenu = false;
-int menuCounter = 0;
-int cornerThreshold = 10;//-800;
+boolean openColorMenu = false;
+int topMenuCounter = 0;
+int bottomMenuCounter = 0;
+int cornerThreshold = 50;//-800;
 int maxMenuCount = 50;
 int holdTime = 250;
+mode highlighted = mode.DRAWING3D;
 
 int col1=150;
 int col2=150;
@@ -49,12 +53,15 @@ void selectModeMenu(mode newMode){
   switch(newMode){
    case DRAWING3D:
      image(img, winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     highlighted = mode.DRAWING3D;
      break;
    case DRAGDROP:
      image(img, winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+     highlighted = mode.DRAGDROP;
      break;
    case GRAPH:
      image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     highlighted = mode.GRAPH;
      break;
   }
    
@@ -80,10 +87,18 @@ void createDDBLocksMenu(){
    image(img, winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
    //selectModeMenu(mode.DRAGDROP);//temp
    popMatrix();
-   //tint(255,255);
-    if(mouseY < 300){
-       openMainMenu=false;
-     }
+    //HIGHLIGHTING WHAT IT IS HOVERED OVER
+   if(y < minY+(maxY-minY)/3) selectModeMenu(mode.GRAPH);
+   else if(y < minY+2*((maxY-minY)/3)) selectModeMenu(mode.DRAWING3D);
+   else selectModeMenu(mode.DRAGDROP);
+   
+   println("MATH??"+(minY+2*((maxY-minY)/3)));
+   
+   if(currGesture == allGesture.PINCH){
+       currMode = highlighted;
+       openMainMenu = false;
+       openColorMenu = false;
+   }
 }
 
 void createDrawMenu(){
@@ -195,13 +210,17 @@ void selectLineMenu(int x){
 
 void checkForMainMenu()
 {
-  //print("checking main menu...");
   //Check if this point is a corner point
-  if(mouseY> 300 /*cornerThreshold && menuCounter<maxMenuCount*/)//x<cornerThreshold && menuCounter<maxMenuCount) !!!test
+  if(x < minX+cornerThreshold && currGesture != allGesture.PINCH)/*cornerThreshold && menuCounter<maxMenuCount*///x<cornerThreshold && menuCounter<maxMenuCount) !!!test*/
   {
-    openMainMenu = true;
-    //println("less than cornerThreshold");
-    //menuCounter++;
+    //openMainMenu = true;
+    println("less than cornerThreshold");
+    bottomMenuCounter++;
+  }
+  else if(x>maxX-cornerThreshold && currGesture != allGesture.PINCH)
+  {
+    println("moreThanCornerThreshold");
+    topMenuCounter++;
   }
   else
   {
@@ -209,11 +228,18 @@ void checkForMainMenu()
     //menuCounter=0;
   }
   
-  /*if(menuCounter>=maxMenuCount) 
+  if(topMenuCounter>=maxMenuCount) 
+    {
+      openColorMenu=true;
+      //reset maxCounter and wait for 3 seconds
+      topMenuCounter=0;
+    } 
+    else if(bottomMenuCounter>=maxMenuCount)
     {
       openMainMenu=true;
       //reset maxCounter and wait for 3 seconds
-      menuCounter=0;
-    } 
-  //openMainMenu = true;*/
+      bottomMenuCounter=0;
+    }
+  
+ 
 }
