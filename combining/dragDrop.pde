@@ -1,11 +1,11 @@
 PShape pyramid;
 boolean prevPinch;
 
-int cubeX = scrnSize/15;
+int cubeX = -scrnSize/10;
 int cubeY = -scrnSize/5;
-int sphereX = scrnSize/15;
+int sphereX = -scrnSize/10;
 int sphereY = 0;
-int pyrX = scrnSize/15;
+int pyrX = -scrnSize/10;
 int pyrY = scrnSize/5;
 int margin = scrnSize/50;
 public enum shapeType{CUBE,SPHER ,PYRAMID};
@@ -37,7 +37,12 @@ void drawDragDrop()
   drawHolo();
 }
 
-void drawImageDragDrop(PGraphics pg){
+void drawImageDragDrop(PGraphics pg)
+{
+  //pg.pushMatrix();
+  //translate(cubeX,cubeY, 0);
+  //sphere(20);
+  //pg.popMatrix();
   pg.pushMatrix();
   pg.fill(255);
   drawMenu(pg);
@@ -165,24 +170,24 @@ void pinch()
 
 void drawMenu(PGraphics pg)
 {
-  pg.background(127,0,0);
+  pg.background(0);
   pg.fill(255);
   pg.lights();
   pg.noStroke();
   pg.pushMatrix();
-  pg.translate(scrnSize/15, -scrnSize/5, -scrnSize/25);
+  pg.translate(cubeX, cubeY, -scrnSize/25);
   pg.rotateY(0.1);
   pg.rotateZ(0.2);
   pg.box(scrnSize*3/50);  
   pg.popMatrix();
   
   pg.pushMatrix();
-  pg.translate(scrnSize/15, 0, -scrnSize/25);
+  pg.translate(sphereX, sphereY, -scrnSize/25);
   pg.sphere(scrnSize/25);
   pg.popMatrix();
   
   pg.pushMatrix();
-  pg.translate(scrnSize/15, scrnSize/5, -scrnSize/25);
+  pg.translate(pyrX, pyrY, -scrnSize/25);
   pg.rotateY(1);
   pg.shape(pyramid);  
   pg.popMatrix();
