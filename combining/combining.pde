@@ -21,6 +21,13 @@ int z = 0;
 int prevX = 0;
 int prevY = 0;
 int prevZ = 0;
+int minX = -800;
+int maxX = 150;
+int minY = -300;
+int maxY = 300;
+int minZ = -scrnSize;
+int maxZ = scrnSize;
+
 
 
 //Gesture
@@ -32,7 +39,7 @@ allGesture prevGesture = allGesture.HANDOUT;
 
 //Mode
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
-mode currMode = mode.GRAPH;
+mode currMode = mode.DRAWING3D;
 PImage img;
 
 void setup(){
@@ -53,11 +60,7 @@ void draw(){
   Hand hand = frame.hands().frontmost(); //frontmost hand
 
   ////GET THE GESTURE
-  if(checkPinch()) currGesture = allGesture.PINCH;
-  if(checkPoint()) currGesture = allGesture.POINTING;
-  if(checkCircle()) currGesture = allGesture.CIRCLE;
-  if(checkHandout()) currGesture = allGesture.HANDOUT;
-  if(checkSwipe() != 0) currGesture = allGesture.SWIPE;
+  getGesture();
   
   
   ////GET THE POSITION
@@ -66,8 +69,8 @@ void draw(){
   x = -2*int(pos.getY())+150;
   z = 2*int(pos.getZ());
   temp = new PVector(x,y,z);
-  //println("x : "+ x + 
-  //" y : "+ y +" z : "+ z);
+  println("x : "+ x + 
+  " y : "+ y +" z : "+ z);
   
   ////DRAWING//////
   switch (currMode) {

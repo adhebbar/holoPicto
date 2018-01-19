@@ -5,16 +5,6 @@ float pinchThresh = 0.4;
 int circleCount = 0;
 int circleNeeded = 40;
 
-
-void getGesture()
-{
-  if(checkPinch()) currGesture = allGesture.PINCH;
-  if(checkPoint()) currGesture = allGesture.POINTING;
-  if(checkCircle()) currGesture = allGesture.CIRCLE;
-  if(checkHandout()) currGesture = allGesture.HANDOUT;
-  if(checkSwipe() != 0) currGesture = allGesture.SWIPE; 
-}
-
 /* Checks for pinching, returns true if found in current frame, 
   false otherwise*/
 Boolean checkPinch()
@@ -49,7 +39,7 @@ int checkSwipe(){
     Finger finger = new Finger(p);
     if(finger.isExtended())
     {
-      com.leapmotion.leap.Vector pointingToward = p.direction();
+      Vector pointingToward = p.direction();
       countAngle = countAngle + int(pointingToward.yaw());
     }
   }

@@ -48,6 +48,7 @@ void setup() {
   //                }}
 
 int l=0;
+int count =0;
  for(int X = xBound1; X <= xBound2; X++ )
         for(int Y = yBound1; Y <= yBound2; Y++ )
             for(int Z = zBound1; Z <= zBound2; Z++ ){
@@ -56,14 +57,15 @@ int l=0;
                   {
                     
                     curr= new PVector(X,Y,Z);
-                       print("Here   "); println(X*100+Y*10+Z);
+                       //print("Here   "); println(X*100+Y*10+Z);
 
                   if(l==0){
                     prev2= curr;
+                    print("prev2" + prev2);
                   }
                   else if(l==1){
                     prev1= curr;
-                  
+                    print("prev1" + prev1);
                   }
                   else 
                   {if( prev1.dist(prev2)< prev1.dist(curr)) skeleton.addEdge(prev1,prev2);
@@ -71,6 +73,8 @@ int l=0;
                   prev2 = prev1;
                   prev1 = curr;
                   }
+                  count+=1;
+                  println("count" + count);
                 l++;
 
                   }

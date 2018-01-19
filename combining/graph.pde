@@ -70,7 +70,7 @@ void calculatePoints(){
                        //Draw a sphere at this point
                        graphPoints.add(curr);
                        graphAngles.add(new Float((-currAngle)));
-                      print("Here"); println(X*100+Y*10+Z);
+                      //print("Here"); println(X*100+Y*10+Z);
                   }  
   calculated = true;
 }
@@ -81,7 +81,7 @@ void drawImageGraph(PGraphics pg)
     pg.stroke(126); //color of the border
     pg.strokeWeight(10); //width of the stroke
     pg.noFill(); //??
-    println("SIZE"+graphPoints.size());
+    //println("SIZE"+graphPoints.size());
     for (int i = 0; i< graphPoints.size(); i++)
     {
         Float angle = graphAngles.get(i);
