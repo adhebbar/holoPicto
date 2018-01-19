@@ -49,22 +49,18 @@ void createMainMenu(){
      }*/
      
         //HIGHLIGHTING WHAT IT IS HOVERED OVER
-    println("y: " + y);
-    println(minY+((maxY-minY)/3));
-    if(y < minY+(maxY-minY)/3) {
+    if(y < minY+2*((maxY-minY)/3)) {
+      print("DRAGDROP");
       selectModeMenu(mode.DRAGDROP);
-      
     }
     
-    else if(y < minY+2*((maxY-minY)/3)){
-      //print("GRAPH");
+    else if(y < minY+(maxY-minY)/3){
       selectModeMenu(mode.DRAWING3D);
       print("DRAWING3D");
     }
     else{
       selectModeMenu(mode.GRAPH);
-      
-      //print("DRAGDROP");
+      print("GRAPH");
       
     }
     
@@ -80,19 +76,18 @@ void selectModeMenu(mode newMode){
   tint(255,255);
   switch(newMode){
    case DRAWING3D:
-   image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-   highlighted = mode.DRAWING3D;
-   break;
-   
-   case GRAPH:
-   image(modeImgs[1], winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
-   highlighted = mode.GRAPH;
-   break;
-   
+     image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+     highlighted = mode.DRAWING3D;
+     break;
    case DRAGDROP:
-   image(modeImgs[2], winSize/2 + imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
-    highlighted = mode.DRAGDROP;
-    break;
+     image(modeImgs[1], winSize/2 - imageWidth * 3/2, winSize - menuHeight, imageWidth, imageWidth);
+     highlighted = mode.DRAGDROP;
+     break;
+   case GRAPH:
+   image(modeImgs[0], winSize/2 - imageWidth/2, winSize - menuHeight, imageWidth, imageWidth);
+    
+     highlighted = mode.GRAPH;
+     break;
   }
    
 }
