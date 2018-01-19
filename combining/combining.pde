@@ -1,5 +1,3 @@
-//import de.voidplus.leapmotion.*;
-
 //Setup
 import com.leapmotion.leap.*;
 Controller controller = new Controller();
@@ -8,25 +6,14 @@ Frame frame = controller.frame(); //This current frame
 
 //Split screen
 PGraphics pg[];
-int winSize = 400;
-int scrnSize = 3*winSize/4;
+int winSize;
+int scrnSize;
 int screenCoords[] = {0,0};
 float angleRotated = 0;
 
 //????
 boolean notSet = true;
 
-
-//Variables for the menu
-boolean openMenu = false;
-int menuCounter = 0;
-int cornerThreshold = -800;
-int maxMenuCount = 50;
-int holdTime = 250;
-
-int col1=150;
-int col2=150;
-int col3=150;
 
 //Position
 int x = 0;
@@ -43,14 +30,16 @@ allGesture currGesture = allGesture.HANDOUT;
 allGesture prevGesture = allGesture.HANDOUT;
 
 
-
 //Mode
 public enum mode{DRAWING3D, DRAGDROP, GRAPH};
 mode currMode = mode.DRAWING3D;
 
 void setup(){
+  winSize = 400;
+  scrnSize = 3*winSize/4;
   pg = new PGraphics[4];
-  size(400,400,P3D);
+  //size(displayWidth, displayHeight,P3D);
+  size(winSize, winSize,P3D);
   for(int i = 0; i < 4; i++){
       pg[i] = createGraphics(scrnSize, scrnSize, P3D);
   }
@@ -69,38 +58,7 @@ void draw(){
         circleCount++;
       }
   }
-  
-  //if (checkPinch(frame)) currDrawModeOn = true;
-  //else currDrawModeOn = false;
 
-  ////Check for erase command  
-  //if (checkCircle(frame)) circleCount++;
-  //if(circleCount%30==0)
-  //{
-  //  eraseCommand = true;
-  //  circleCount =0;
-  //}
-  
-  //// erase if required
-  //if(eraseCommand && (strokes.size()>0)) //delete current stroke
-  //{
-  //   currDrawModeOn = false;
-  //   //points = strokes.get(strokes.size()-1); //make current stroke last stroke
-  //   strokes.remove(strokes.size()-1); //remove last stroke from history
-  //   points = new ArrayList<PVector>();
-  //}
-  
-  /////////////CHECKING SWIPE/////////
-  //int swipe = checkSwipe(frame); 
-  ////println("SWIPE PRINT" + swipe);
-  
-  
-  ///////////DRAWING///////////
-  ////issue is that closed fist is pinching but like lol
-  ////Checking if it is actually swiping or one finger extended first
-  ////Check everything else first before checking pinching because a lot of things are pinching
-  //if(numExtended(frame) >= 1) currDrawModeOn = false;
-  //if(swipe != 0) currDrawModeOn = false;
   
   ////GET THE GESTURE
   if(checkPinch()) currGesture = allGesture.PINCH;
@@ -137,11 +95,15 @@ void draw(){
   prevZ = z;
   prevGesture = currGesture;
   
-  if (openMenu)
+  if (openMenu){
+    println("hello?");
     createMenu();
+  }
   else
   {
+    println("bye?");
     checkForMenu();
+    println(openMenu);
   }
 }
 

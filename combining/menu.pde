@@ -1,3 +1,14 @@
+//Variables for the menu
+boolean openMenu = false;
+int menuCounter = 0;
+int cornerThreshold = 10;//-800;
+int maxMenuCount = 50;
+int holdTime = 250;
+
+int col1=150;
+int col2=150;
+int col3=150;
+
 void createMenu()  
   {
     
@@ -60,6 +71,7 @@ void checkForMenu()
       //Check if this point is a corner point
   if(x<cornerThreshold && menuCounter<maxMenuCount)
   {
+    println("less than cornerThreshold");
     menuCounter++;
   }
   else
